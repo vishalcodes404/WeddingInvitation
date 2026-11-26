@@ -389,11 +389,12 @@ body {
   padding-top: 42px;
 }
 
-.toran-svg {
+.toran-img {
   width: calc(100% + 36px);
   margin-left: -18px;
   display: block;
   height: auto;
+  pointer-events: none;
 }
 
 .sec-head {
@@ -445,6 +446,14 @@ body {
 .bride-card {
   grid-template-columns: 0.85fr 1.15fr;
   padding: 20px 18px 18px 14px;
+  background: linear-gradient(135deg, #fff9fa 0%, #ffffff 100%);
+  border-color: rgba(168, 72, 92, 0.22);
+}
+
+.bride-card .parent-box.left-accent {
+  background: #fdf2f4;
+  border-color: rgba(168, 72, 92, 0.24);
+  border-left: 3px solid var(--rose);
 }
 
 .role-label {
@@ -693,7 +702,7 @@ body {
   cursor: pointer;
 }
 
-/* ================= VENUES & EVENTS ================= */
+/* ================= VENUES & EVENTS (DISTINCT TEMPLE & RECEPTION DESIGNS) ================= */
 #venues {
   padding-top: 44px;
 }
@@ -701,25 +710,71 @@ body {
 .venues-stack {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
-.venue-card {
-  background: #ffffff;
-  border: 1px solid rgba(180, 133, 64, 0.28);
+.venue-temple-card {
+  background: #fffdf8;
+  border: 1.5px solid rgba(154, 42, 66, 0.35);
   border-radius: 18px;
-  padding: 24px 18px;
-  box-shadow: 0 10px 28px rgba(72, 52, 26, 0.07);
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(96, 32, 46, 0.1);
 }
 
-.venue-name {
+.venue-reception-card {
+  background: #f9fbfc;
+  border: 1.5px solid rgba(44, 68, 82, 0.3);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(32, 52, 64, 0.1);
+}
+
+.temple-banner,
+.reception-banner {
+  width: 100%;
+  background: transparent;
+}
+
+.temple-arch-svg {
+  width: 100%;
+  display: block;
+  height: auto;
+}
+
+.venue-body {
+  padding: 18px 18px 24px;
+}
+
+.venue-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-family: 'Cinzel', serif;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.venue-badge.maroon {
+  background: #f9ecef;
+  color: #7c1d34;
+  border: 1px solid rgba(124, 29, 52, 0.24);
+}
+
+.venue-badge.slate {
+  background: #ebf1f4;
+  color: #2c4452;
+  border: 1px solid rgba(44, 68, 82, 0.24);
+}
+
+.venue-title-lg {
   font-size: 25px;
   font-weight: 600;
-  color: #2f231c;
-  margin-top: 6px;
+  color: #2b211c;
+  margin-top: 10px;
 }
 
-.venue-place {
+.venue-subplace {
   font-size: 15px;
   font-style: italic;
   color: var(--ink-soft);
@@ -727,33 +782,85 @@ body {
   line-height: 1.45;
 }
 
-.venue-detail {
-  font-size: 15px;
-  color: #3b2a20;
-  margin-top: 14px;
+.time-pill-box {
+  margin: 16px auto 18px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: #fbf4e6;
+  border: 1px dashed rgba(180, 133, 64, 0.5);
 }
 
-.venue-time {
+.tp-label {
   font-family: 'Cinzel', serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--rose-deep);
-  margin-top: 6px;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  color: var(--gold-text);
 }
 
-.venue-note {
+.tp-val {
+  font-family: 'Cinzel', serif;
   font-size: 14px;
+  font-weight: 600;
+  color: #7c1d34;
+  margin-top: 3px;
+}
+
+.tp-note {
+  font-size: 13.5px;
   font-style: italic;
-  color: #6d584b;
+  color: #6b5648;
   margin-top: 4px;
 }
 
-.venue-actions {
-  display: flex;
-  flex-wrap: wrap;
+.btn-temple {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
-  gap: 8px;
-  margin-top: 16px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: #7c1d34;
+  color: #fffaf0;
+  font-family: 'Cinzel', serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(124, 29, 52, 0.25);
+}
+
+.btn-slate-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid #2c4452;
+  background: #ffffff;
+  color: #2c4452;
+  font-family: 'Cinzel', serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.btn-slate-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid #2c4452;
+  background: #2c4452;
+  color: #fffdf8;
+  font-family: 'Cinzel', serif;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .btn-gold-outline {
@@ -774,10 +881,11 @@ body {
   cursor: pointer;
 }
 
-.btn-gold-outline.primary {
-  background: var(--rose-deep);
-  border-color: var(--rose-deep);
-  color: #fffdf8;
+.venue-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
 }
 
 .contact-strip {
@@ -785,7 +893,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 /* ================= THANK YOU FINALE ================= */
@@ -796,15 +904,29 @@ body {
 }
 
 .ty-badge {
-  width: 74px;
-  height: 74px;
+  width: 78px;
+  height: 78px;
   margin: 4px auto 0;
   border-radius: 50%;
   background: #fffdf8;
-  border: 1px solid rgba(180, 133, 64, 0.35);
-  box-shadow: 0 6px 18px rgba(85, 62, 26, 0.1);
+  border: 1.5px solid rgba(180, 133, 64, 0.42);
+  box-shadow: 0 6px 18px rgba(85, 62, 26, 0.12);
   display: grid;
   place-items: center;
+  overflow: hidden;
+}
+
+.kalash-badge-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.kalash-side-img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(72, 48, 22, 0.14));
 }
 
 .ty-message {
