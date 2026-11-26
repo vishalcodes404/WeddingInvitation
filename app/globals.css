@@ -76,289 +76,59 @@ body {
   background: rgba(255, 253, 248, 0.96);
 }
 
-/* ================= INTRO: ENVELOPE + WAX SEAL + SILK BOW + DIAMOND SPLIT ================= */
+/* ================= VIDEO INTRO OVERLAY ================= */
 .intro-root {
   position: absolute;
   inset: 0;
   z-index: 30;
   overflow: hidden;
-  transition: opacity 0.7s ease;
-}
-
-.intro-root.revealing {
-  pointer-events: none;
+  background: var(--cream);
+  cursor: pointer;
+  transition: opacity 0.55s ease;
 }
 
 .intro-root.fadeout {
   opacity: 0;
+  pointer-events: none;
 }
 
-/* Layer 1: Pearlescent Lace Frame & Diamond Veil Split */
-.lace-stage {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-}
-
-.lace-frame-outer {
-  position: absolute;
-  inset: 0;
-  transition: opacity 0.9s ease 0.45s, transform 1.15s ease;
-  /* Transparent center oval window opens up when diamond opens */
-  -webkit-mask-image: radial-gradient(ellipse 36% 32% at 50% 50%, #000 100%, #000 100%);
-  mask-image: radial-gradient(ellipse 36% 32% at 50% 50%, #000 100%, #000 100%);
-}
-
-.lace-frame-outer.opening {
-  opacity: 0;
-  transform: scale(1.06);
-}
-
-.lace-img {
+.intro-video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.lace-iridescent {
+.tap-overlay {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 30% 35%, rgba(255, 255, 255, 0.32), transparent 55%),
-    radial-gradient(circle at 72% 60%, rgba(226, 238, 240, 0.22), transparent 55%);
-  mix-blend-mode: screen;
-  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: max(12%, env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, transparent 65%, rgba(45, 30, 14, 0.22) 100%);
 }
 
-/* Center Silk Veil Halves that split into a Diamond (like video frame 20) */
-.veil-panel {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  transition:
-    clip-path 1.2s cubic-bezier(0.55, 0.05, 0.25, 1),
-    opacity 0.55s ease 0.75s;
-  filter: drop-shadow(0 0 14px rgba(105, 82, 50, 0.28));
-}
-
-.veil-panel.left {
-  clip-path: polygon(0% 0%, 50.2% 0%, 50.2% 50%, 50.2% 100%, 0% 100%);
-}
-
-.veil-panel.right {
-  clip-path: polygon(49.8% 0%, 100% 0%, 100% 100%, 49.8% 100%, 49.8% 50%);
-}
-
-.lace-stage.diamond-open .veil-panel.left {
-  clip-path: polygon(0% 0%, 46% 0%, 6% 50%, 46% 100%, 0% 100%);
-  opacity: 0;
-}
-
-.lace-stage.diamond-open .veil-panel.right {
-  clip-path: polygon(54% 0%, 100% 0%, 100% 100%, 54% 100%, 94% 50%);
-  opacity: 0;
-}
-
-.veil-fabric {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(255, 253, 247, 0.72), rgba(242, 231, 214, 0.85));
-  backdrop-filter: blur(2px);
-}
-
-.veil-pleat-ribbon {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  height: 7.5%;
-  transform: translateY(-50%);
-  background: linear-gradient(
-    180deg,
-    rgba(225, 208, 182, 0.55) 0%,
-    rgba(255, 253, 248, 0.92) 38%,
-    rgba(216, 196, 168, 0.72) 100%
-  );
-  box-shadow: 0 3px 10px rgba(95, 72, 42, 0.16);
-}
-
-/* Center Satin Bow */
-.bow-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-}
-
-.bow-overlay.parted {
-  opacity: 0;
-}
-
-.bow-svg-full {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.bow-loops,
-.bow-tails,
-.bow-knot {
-  transform-origin: 200px 358px;
-  transition: transform 0.72s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.55s ease;
-}
-
-.bow-overlay.untying .bow-loops {
-  transform: scaleX(0.28) scaleY(0.45);
-  opacity: 0;
-}
-
-.bow-overlay.untying .bow-tails {
-  transform: translateY(-48px) scale(0.55);
-  opacity: 0;
-}
-
-.bow-overlay.untying .bow-knot {
-  transform: scale(0.58);
-  opacity: 0.75;
-}
-
-/* Layer 2: Ginkgo Embossed Envelope Shell */
-.envelope-shell {
-  position: absolute;
-  inset: 0;
-  z-index: 6;
-  transition: transform 0.95s cubic-bezier(0.55, 0, 0.22, 1), opacity 0.7s ease 0.2s;
-}
-
-.envelope-shell.gone {
-  transform: translateY(104%);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.env-inner-shadow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 28%, #8d7455 0%, #5c4832 100%);
-}
-
-.ginkgo-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.env-flap-side,
-.env-flap-bottom {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.env-flap-side.left {
-  clip-path: polygon(0% 0%, 50.5% 50%, 0% 100%);
-  filter: drop-shadow(4px 0 12px rgba(45, 30, 12, 0.26));
-}
-
-.env-flap-side.right {
-  clip-path: polygon(100% 0%, 100% 100%, 49.5% 50%);
-  filter: drop-shadow(-4px 0 12px rgba(45, 30, 12, 0.26));
-}
-
-.env-flap-bottom {
-  clip-path: polygon(0% 100%, 0% 82%, 47% 48%, 53% 48%, 100% 82%, 100% 100%);
-  filter: drop-shadow(0 -6px 14px rgba(45, 30, 12, 0.28));
-}
-
-.env-creases {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 7;
-}
-
-/* Top Flap lifts upward smoothly while keeping the V & S wax seal visible */
-.env-flap-top-lift {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 58%;
-  transform-origin: top center;
-  transition: transform 0.95s cubic-bezier(0.42, 0, 0.2, 1);
-  z-index: 8;
-}
-
-.envelope-shell.opening .env-flap-top-lift {
-  transform: translateY(-34%) scaleY(0.32);
-}
-
-.env-flap-top-shape {
-  position: absolute;
-  inset: 0;
-  clip-path: polygon(0% 0%, 100% 0%, 100% 34%, 53% 93%, 50% 95%, 47% 93%, 0% 34%);
-  overflow: hidden;
-  filter: drop-shadow(0 12px 24px rgba(42, 28, 12, 0.36));
-}
-
-.wax-seal-trigger {
-  position: absolute;
-  left: 50%;
-  top: 86%;
-  width: 34cqw;
-  transform: translate(-50%, -50%);
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  filter: drop-shadow(0 8px 18px rgba(42, 28, 12, 0.44));
-  transition: transform 0.95s cubic-bezier(0.42, 0, 0.2, 1);
-}
-
-.envelope-shell.opening .wax-seal-trigger {
-  /* Counter-scale Y so the wax seal stays round and readable as the flap lifts! */
-  transform: translate(-50%, -50%) scaleY(2.6) scale(0.76);
-}
-
-.wax-seal-trigger:hover {
-  filter: drop-shadow(0 10px 22px rgba(42, 28, 12, 0.54));
-}
-
-.wax-seal-img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.tap-seal-label {
-  position: absolute;
-  left: 50%;
-  bottom: 11%;
-  transform: translateX(-50%);
-  z-index: 10;
-  padding: 1.3cqw 3.8cqw;
+.tap-open-pill {
+  padding: 1.8cqw 5cqw;
   border-radius: 99cqw;
-  border: 0.25cqw solid rgba(130, 99, 45, 0.45);
-  background: rgba(252, 247, 236, 0.88);
-  backdrop-filter: blur(4px);
+  border: 0.3cqw solid rgba(180, 133, 64, 0.75);
+  background: rgba(252, 247, 236, 0.92);
+  backdrop-filter: blur(6px);
   color: var(--ink);
   font-family: 'Cinzel', serif;
-  font-size: 2.2cqw;
-  letter-spacing: 0.18em;
+  font-size: 2.5cqw;
+  font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   cursor: pointer;
-  animation: fadePulse 2.3s ease-in-out infinite;
+  box-shadow: 0 8px 24px rgba(42, 28, 12, 0.25);
+  animation: fadePulse 2.2s ease-in-out infinite;
 }
 
 @keyframes fadePulse {
-  0%, 100% { opacity: 0.65; }
-  50% { opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.88; }
+  50% { transform: scale(1.04); opacity: 1; }
 }
 
 /* ================= MAIN PALACE INVITATION STAGE ================= */

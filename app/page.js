@@ -61,8 +61,9 @@ export default function Page() {
     }
   }, [])
 
-  // Graceful audio autoplay fallback: start gentle music on first pointer interaction unless muted
+  // Start gentle ambient music once main invitation is active (after intro video)
   useEffect(() => {
+    if (!started || showIntro) return
     const unlockAudio = () => {
       if (!userMutedRef.current && !musicOn) {
         startMusic()
@@ -70,7 +71,7 @@ export default function Page() {
     }
     window.addEventListener('pointerdown', unlockAudio, { once: true })
     return () => window.removeEventListener('pointerdown', unlockAudio)
-  }, [musicOn])
+  }, [started, showIntro, musicOn])
 
   const goTo = (next) => {
     clearTimeout(timerRef.current)
@@ -182,10 +183,12 @@ export default function Page() {
     setShowIntro(false)
     setStep(0)
     setStarted(true)
+    if (!userMutedRef.current) startMusic()
   }
 
   const replayIntro = () => {
     clearTimeout(timerRef.current)
+    stopMusic()
     setStarted(false)
     setStep(0)
     setPaused(false)
@@ -422,14 +425,10 @@ export default function Page() {
         </nav>
       )}
 
-      {/* 7. Sculpted Ginkgo Envelope + Bronze Wax Seal + Satin Bow + Diamond Lace Split Intro */}
+      {/* 7. Video Intro (IMG_8946.MP4 -> /intro.mp4) */}
       {showIntro && (
         <EnvelopeIntro
           key={introKey}
-          onRevealStart={() => {
-            setStep(0)
-            setStarted(true)
-          }}
           onComplete={finishIntro}
           onSkip={finishIntro}
         />
