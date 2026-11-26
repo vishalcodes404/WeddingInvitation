@@ -235,25 +235,13 @@ export default function Page() {
                 WITH THE BLESSINGS OF LORD GANESHA, WE CORDIALLY INVITE YOU TO THE MARRIAGE OF OUR SON
               </p>
 
-              <h1 className="script-name" style={{ marginTop: '0.4cqw' }}>
+              <h1 className="script-name" style={{ marginTop: '0.8cqw' }}>
                 {D.groom}
               </h1>
-              <p className="cin-sm" style={{ fontSize: '2.05cqw', fontWeight: 600 }}>
-                ({D.groomParents})
-              </p>
-              <p className="serif-ital" style={{ fontSize: '2.4cqw' }}>
-                {D.groomHome}
-              </p>
 
               <LeafDivider label="&" />
 
               <h1 className="script-name">{D.bride}</h1>
-              <p className="cin-sm" style={{ fontSize: '2.05cqw', fontWeight: 600 }}>
-                ({D.brideParents})
-              </p>
-              <p className="serif-ital" style={{ fontSize: '2.4cqw' }}>
-                {D.brideHome}
-              </p>
             </>
           )}
 
@@ -273,31 +261,6 @@ export default function Page() {
                 <span className="day">{D.day}</span>
                 <i />
                 <span className="side">{D.year}</span>
-              </div>
-
-              <p className="cin-sm" style={{ fontWeight: 600 }}>
-                {D.weekday.toUpperCase()} • {D.malayalam.toUpperCase()}
-              </p>
-              <p className="cin" style={{ fontSize: '2.5cqw', fontWeight: 600, color: 'var(--rose-deep)' }}>
-                MUHURTHAM: {D.muhurtham}
-              </p>
-              <p className="serif-ital" style={{ fontSize: '2.5cqw' }}>
-                and thereafter for lunch
-              </p>
-
-              <LeafDivider label="Venue" />
-
-              <p className="cin" style={{ fontSize: '2.5cqw', fontWeight: 600 }}>
-                {D.venue.toUpperCase()}, {D.place.toUpperCase()}
-              </p>
-
-              <div style={{ display: 'flex', gap: '1.4cqw', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <a className="btn-pill" href={D.templeMap} target="_blank" rel="noopener noreferrer">
-                  VIEW ON MAP
-                </a>
-                <button type="button" className="btn-pill" onClick={() => setModalOpen(true)}>
-                  RECEPTION &amp; RSVP
-                </button>
               </div>
             </>
           )}
