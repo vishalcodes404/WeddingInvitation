@@ -30,7 +30,7 @@ const D = {
   phones: ['9020903355', '9847570940'],
 }
 
-const SLIDE_DURATIONS = [9500, 11000]
+const SLIDE_DURATIONS = [3800, 3800]
 
 export default function Page() {
   const [introKey, setIntroKey] = useState(0)
