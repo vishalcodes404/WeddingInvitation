@@ -30,19 +30,13 @@ const D = {
   phones: ['9020903355', '9847570940'],
 }
 
-const SLIDE_DURATIONS = [3800, 3800]
-
 export default function Page() {
   const [introKey, setIntroKey] = useState(0)
   const [showIntro, setShowIntro] = useState(false)
   const [started, setStarted] = useState(false)
-  const [step, setStep] = useState(0)
-  const [out, setOut] = useState(false)
-  const [paused, setPaused] = useState(false)
   const [musicOn, setMusicOn] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
 
-  const timerRef = useRef(null)
   const audioRef = useRef({ ctx: null, interval: null, master: null, droneOscs: [] })
   const userMutedRef = useRef(false)
 
@@ -72,23 +66,6 @@ export default function Page() {
     window.addEventListener('pointerdown', unlockAudio, { once: true })
     return () => window.removeEventListener('pointerdown', unlockAudio)
   }, [started, showIntro, musicOn])
-
-  const goTo = (next) => {
-    clearTimeout(timerRef.current)
-    setOut(true)
-    setTimeout(() => {
-      setStep((next + 2) % 2)
-      setOut(false)
-    }, 450)
-  }
-
-  useEffect(() => {
-    if (!started || paused || modalOpen) return
-    timerRef.current = setTimeout(() => {
-      goTo((step + 1) % 2)
-    }, SLIDE_DURATIONS[step])
-    return () => clearTimeout(timerRef.current)
-  }, [started, paused, modalOpen, step])
 
   useEffect(() => {
     return () => stopMusic()
@@ -181,17 +158,13 @@ export default function Page() {
       sessionStorage.setItem('vs_intro_seen', '1')
     } catch {}
     setShowIntro(false)
-    setStep(0)
     setStarted(true)
     if (!userMutedRef.current) startMusic()
   }
 
   const replayIntro = () => {
-    clearTimeout(timerRef.current)
     stopMusic()
     setStarted(false)
-    setStep(0)
-    setPaused(false)
     setShowIntro(true)
     setIntroKey((k) => k + 1)
   }
@@ -207,99 +180,56 @@ export default function Page() {
       {/* 3. Lord Ganesha Medallion under Arch Apex */}
       <img src="/art/ganesha.png" alt="Lord Ganesha emblem" className="ganesha-emblem" />
 
-      {/* 4. Dynamic Courtyard Illustrations (Elephants on Slide 0, Couple on Slide 1) */}
+      {/* 4. Animated Bride & Groom in Courtyard */}
       <div className="courtyard-layer" aria-hidden="true">
-        <img
-          src="/art/elephant-left.png"
-          alt=""
-          className={`prop-elephant left${step === 0 ? ' on' : ''}`}
-        />
-        <img
-          src="/art/elephant-right.png"
-          alt=""
-          className={`prop-elephant right${step === 0 ? ' on' : ''}`}
-        />
         <img
           src="/art/couple.png"
           alt=""
-          className={`prop-couple${step === 1 ? ' on' : ''}`}
+          className={`prop-couple${started ? ' on' : ''}`}
         />
       </div>
 
-      {/* 5. Two Invitation Scenes */}
+      {/* 5. Unified Wedding Invitation Content */}
       {started && (
-        <section className={`content-zone${out ? ' out' : ''}`} key={`${introKey}-${step}`}>
-          {step === 0 && (
-            <>
-              <p className="cin" style={{ fontSize: '2.25cqw', fontWeight: 600 }}>
-                WITH THE BLESSINGS OF LORD GANESHA, WE CORDIALLY INVITE YOU TO THE MARRIAGE OF OUR SON
-              </p>
+        <section className="content-zone" key={introKey}>
+          <div style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <FloatingRings className="rings-left" />
+            <h2 className="script-title write-reveal" style={{ fontSize: '8.4cqw' }}>
+              Wedding
+            </h2>
+            <p className="cin" style={{ fontSize: '2.35cqw', letterSpacing: '0.28em', marginTop: '-0.6cqw' }}>
+              CEREMONY
+            </p>
+          </div>
 
-              <h1 className="script-name" style={{ marginTop: '0.8cqw' }}>
-                {D.groom}
-              </h1>
+          <p className="cin" style={{ fontSize: '2.05cqw', fontWeight: 600, lineHeight: 1.4 }}>
+            WITH THE BLESSINGS OF LORD GANESHA, WE CORDIALLY INVITE YOU TO THE MARRIAGE OF OUR SON
+          </p>
 
-              <LeafDivider label="&" />
+          <h1 className="script-name" style={{ fontSize: '10.6cqw', marginTop: '0.2cqw' }}>
+            {D.groom}
+          </h1>
 
-              <h1 className="script-name">{D.bride}</h1>
-            </>
-          )}
+          <LeafDivider label="&" />
 
-          {step === 1 && (
-            <>
-              <div style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <FloatingRings className="rings-left" />
-                <h2 className="script-title write-reveal">Wedding</h2>
-                <p className="cin" style={{ fontSize: '2.8cqw', letterSpacing: '0.28em', marginTop: '-0.6cqw' }}>
-                  CEREMONY
-                </p>
-              </div>
+          <h1 className="script-name" style={{ fontSize: '10.6cqw' }}>
+            {D.bride}
+          </h1>
 
-              <div className="date-lockup">
-                <span className="side">{D.month}</span>
-                <i />
-                <span className="day">{D.day}</span>
-                <i />
-                <span className="side">{D.year}</span>
-              </div>
-            </>
-          )}
+          <div className="date-lockup" style={{ marginTop: '0.4cqw' }}>
+            <span className="side" style={{ fontSize: '2.9cqw' }}>{D.month}</span>
+            <i style={{ height: '6.4cqw' }} />
+            <span className="day" style={{ fontSize: '7.8cqw' }}>{D.day}</span>
+            <i style={{ height: '6.4cqw' }} />
+            <span className="side" style={{ fontSize: '2.9cqw' }}>{D.year}</span>
+          </div>
         </section>
       )}
 
-      {/* 6. Video-Style Progress & Playback Bar */}
+      {/* 6. Minimal Bottom Controls */}
       {started && (
-        <nav className="player-bar" aria-label="Invitation playback controls">
-          <div className="progress-track">
-            {SLIDE_DURATIONS.map((dur, i) => (
-              <button
-                key={`${i}-${step}`}
-                type="button"
-                aria-label={`Section ${i + 1}`}
-                className={`prog-seg${i < step ? ' done' : ''}${i === step ? ' active' : ''}${
-                  paused || modalOpen ? ' paused' : ''
-                }`}
-                style={{ '--dur': `${dur}ms` }}
-                onClick={() => goTo(i)}
-              >
-                <span className="prog-fill" />
-              </button>
-            ))}
-          </div>
-
-          <div className="ctrl-row">
-            <div className="ctrl-group">
-              <button type="button" className="ctrl-chip" onClick={() => goTo(step - 1)} aria-label="Previous">
-                ‹
-              </button>
-              <button type="button" className="ctrl-chip" onClick={() => setPaused((p) => !p)}>
-                {paused ? 'PLAY' : 'PAUSE'}
-              </button>
-              <button type="button" className="ctrl-chip" onClick={() => goTo(step + 1)} aria-label="Next">
-                ›
-              </button>
-            </div>
-
+        <nav className="player-bar" aria-label="Invitation controls">
+          <div className="ctrl-row" style={{ justifyContent: 'flex-end' }}>
             <div className="ctrl-group">
               <button type="button" className="ctrl-chip" onClick={replayIntro}>
                 INTRO
