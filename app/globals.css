@@ -894,6 +894,7 @@ body {
   justify-content: center;
   gap: 10px;
   margin-top: 2px;
+  padding-bottom: 18px;
 }
 
 /* ================= THANK YOU FINALE ================= */
@@ -989,10 +990,10 @@ body {
   margin-top: 4px;
 }
 
-.ty-palace-strip {
+.ty-palace-img {
   width: calc(100% + 36px);
   margin-left: -18px;
-  height: 52px;
+  height: auto;
   display: block;
 }
 
@@ -1010,11 +1011,12 @@ body {
 
 .floating-controls {
   position: fixed;
-  right: max(14px, env(safe-area-inset-right));
-  bottom: max(14px, env(safe-area-inset-bottom));
+  right: max(12px, env(safe-area-inset-right));
+  bottom: max(12px, env(safe-area-inset-bottom));
   z-index: 40;
   display: flex;
   gap: 6px;
+  opacity: 0.92;
 }
 
 .ctrl-chip {
