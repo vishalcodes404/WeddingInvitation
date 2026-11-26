@@ -174,8 +174,8 @@ export default function Page() {
       {/* 1. Painted Mughal Floral Arch & Palace Garden Backdrop */}
       <img src="/art/palace.png" alt="" className="palace-bg" />
 
-      {/* 2. Live Birds, Rose Petals & Gold Dust */}
-      <AmbientCanvas showFountainSparkle={false} />
+      {/* 2. Live Birds, Gold Dust & Natural Flowing Flowers (starts once home opens) */}
+      <AmbientCanvas showFountainSparkle={false} flowerShower={started} />
 
       {/* 3. Lord Ganesha Medallion under Arch Apex */}
       <img src="/art/ganesha.png" alt="Lord Ganesha emblem" className="ganesha-emblem" />
@@ -192,12 +192,21 @@ export default function Page() {
       {/* 5. Unified Wedding Invitation Content */}
       {started && (
         <section className="content-zone" key={introKey}>
-          <div style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginBottom: '2.6cqw',
+            }}
+          >
             <FloatingRings className="rings-left" />
             <h2 className="script-title write-reveal" style={{ fontSize: '8.4cqw' }}>
               Wedding
             </h2>
-            <p className="cin" style={{ fontSize: '2.35cqw', letterSpacing: '0.28em', marginTop: '-0.6cqw' }}>
+            <p className="cin" style={{ fontSize: '2.35cqw', letterSpacing: '0.28em', marginTop: '-0.4cqw' }}>
               CEREMONY
             </p>
           </div>
