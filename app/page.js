@@ -2,6 +2,10 @@
 import { useEffect, useRef, useState } from 'react'
 import AmbientCanvas from './components/AmbientCanvas'
 import EnvelopeIntro from './components/EnvelopeIntro'
+import MeetCoupleSection from './components/MeetCoupleSection'
+import CountdownScratchSection from './components/CountdownScratchSection'
+import VenuesSection from './components/VenuesSection'
+import ThankYouSection from './components/ThankYouSection'
 import { FloatingRings, LeafDivider } from './components/Ornaments'
 import RsvpModal from './components/RsvpModal'
 
@@ -66,6 +70,22 @@ export default function Page() {
     window.addEventListener('pointerdown', unlockAudio, { once: true })
     return () => window.removeEventListener('pointerdown', unlockAudio)
   }, [started, showIntro, musicOn])
+
+  // Scroll-reveal observer for sections below the hero
+  useEffect(() => {
+    if (!started) return
+    const els = document.querySelectorAll('.reveal')
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add('visible')
+        })
+      },
+      { threshold: 0.12 }
+    )
+    els.forEach((el) => obs.observe(el))
+    return () => obs.disconnect()
+  }, [started])
 
   useEffect(() => {
     return () => stopMusic()
@@ -159,102 +179,108 @@ export default function Page() {
     } catch {}
     setShowIntro(false)
     setStarted(true)
+    window.scrollTo({ top: 0, behavior: 'instant' })
     if (!userMutedRef.current) startMusic()
   }
 
   const replayIntro = () => {
     stopMusic()
+    window.scrollTo({ top: 0, behavior: 'instant' })
     setStarted(false)
     setShowIntro(true)
     setIntroKey((k) => k + 1)
   }
 
   return (
-    <main className="stage">
-      {/* 1. Painted Mughal Floral Arch & Palace Garden Backdrop */}
-      <img src="/art/palace.png" alt="" className="palace-bg" />
+    <div className="shell">
+      {/* 1. HERO PALACE ARCH INVITATION */}
+      <section className="stage" aria-label="Wedding Invitation">
+        <img src="/art/palace.png" alt="" className="palace-bg" />
+        <AmbientCanvas showFountainSparkle={false} flowerShower={started} />
+        <img src="/art/ganesha.png" alt="Lord Ganesha emblem" className="ganesha-emblem" />
 
-      {/* 2. Live Birds, Gold Dust & Natural Flowing Flowers (starts once home opens) */}
-      <AmbientCanvas showFountainSparkle={false} flowerShower={started} />
+        <div className="courtyard-layer" aria-hidden="true">
+          <img src="/art/couple.png" alt="" className={`prop-couple${started ? ' on' : ''}`} />
+        </div>
 
-      {/* 3. Lord Ganesha Medallion under Arch Apex */}
-      <img src="/art/ganesha.png" alt="Lord Ganesha emblem" className="ganesha-emblem" />
+        {started && (
+          <div className="content-zone" key={introKey}>
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginBottom: '2.4cqw',
+              }}
+            >
+              <FloatingRings className="rings-left" />
+              <h2 className="script-title write-reveal" style={{ fontSize: '8.2cqw' }}>
+                Wedding
+              </h2>
+              <p className="cin" style={{ fontSize: '2.3cqw', letterSpacing: '0.28em', marginTop: '-0.4cqw' }}>
+                CEREMONY
+              </p>
+            </div>
 
-      {/* 4. Animated Bride & Groom in Courtyard */}
-      <div className="courtyard-layer" aria-hidden="true">
-        <img
-          src="/art/couple.png"
-          alt=""
-          className={`prop-couple${started ? ' on' : ''}`}
-        />
-      </div>
-
-      {/* 5. Unified Wedding Invitation Content */}
-      {started && (
-        <section className="content-zone" key={introKey}>
-          <div
-            style={{
-              position: 'relative',
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginBottom: '2.6cqw',
-            }}
-          >
-            <FloatingRings className="rings-left" />
-            <h2 className="script-title write-reveal" style={{ fontSize: '8.4cqw' }}>
-              Wedding
-            </h2>
-            <p className="cin" style={{ fontSize: '2.35cqw', letterSpacing: '0.28em', marginTop: '-0.4cqw' }}>
-              CEREMONY
+            <p className="cin" style={{ fontSize: '2cqw', fontWeight: 600, lineHeight: 1.4 }}>
+              WITH THE BLESSINGS OF LORD GANESHA, WE CORDIALLY INVITE YOU TO THE MARRIAGE OF OUR SON
             </p>
+
+            <h1 className="script-name" style={{ fontSize: '10.2cqw', marginTop: '0.2cqw' }}>
+              {D.groom}
+            </h1>
+
+            <LeafDivider label="&" />
+
+            <h1 className="script-name" style={{ fontSize: '10.2cqw' }}>
+              {D.bride}
+            </h1>
+
+            <div className="date-lockup" style={{ marginTop: '0.2cqw' }}>
+              <span className="side" style={{ fontSize: '2.8cqw' }}>{D.month}</span>
+              <i style={{ height: '6.2cqw' }} />
+              <span className="day" style={{ fontSize: '7.6cqw' }}>{D.day}</span>
+              <i style={{ height: '6.2cqw' }} />
+              <span className="side" style={{ fontSize: '2.8cqw' }}>{D.year}</span>
+            </div>
+
+            {/* Scroll Here prompt cleanly above the couple */}
+            <a href="#meet-couple" className="scroll-cue">
+              <span>SCROLL HERE</span>
+              <span className="scroll-arrow">↓</span>
+            </a>
           </div>
+        )}
+      </section>
 
-          <p className="cin" style={{ fontSize: '2.05cqw', fontWeight: 600, lineHeight: 1.4 }}>
-            WITH THE BLESSINGS OF LORD GANESHA, WE CORDIALLY INVITE YOU TO THE MARRIAGE OF OUR SON
-          </p>
-
-          <h1 className="script-name" style={{ fontSize: '10.6cqw', marginTop: '0.2cqw' }}>
-            {D.groom}
-          </h1>
-
-          <LeafDivider label="&" />
-
-          <h1 className="script-name" style={{ fontSize: '10.6cqw' }}>
-            {D.bride}
-          </h1>
-
-          <div className="date-lockup" style={{ marginTop: '0.4cqw' }}>
-            <span className="side" style={{ fontSize: '2.9cqw' }}>{D.month}</span>
-            <i style={{ height: '6.4cqw' }} />
-            <span className="day" style={{ fontSize: '7.8cqw' }}>{D.day}</span>
-            <i style={{ height: '6.4cqw' }} />
-            <span className="side" style={{ fontSize: '2.9cqw' }}>{D.year}</span>
-          </div>
-        </section>
+      {/* 2–5. SCROLLABLE SECTIONS (visible once intro completes) */}
+      {started && (
+        <>
+          <MeetCoupleSection data={D} />
+          <CountdownScratchSection />
+          <VenuesSection data={D} onOpenRsvp={() => setModalOpen(true)} />
+          <ThankYouSection data={D} />
+        </>
       )}
 
-      {/* 6. Minimal Bottom Controls */}
+      {/* Fixed Floating Corner Controls */}
       {started && (
-        <nav className="player-bar" aria-label="Invitation controls">
-          <div className="ctrl-row" style={{ justifyContent: 'flex-end' }}>
-            <div className="ctrl-group">
-              <button type="button" className="ctrl-chip" onClick={replayIntro}>
-                INTRO
-              </button>
-              <button type="button" className="ctrl-chip" onClick={() => setModalOpen(true)}>
-                RSVP
-              </button>
-              <button type="button" className="ctrl-chip" onClick={toggleMusic}>
-                {musicOn ? '♪ ON' : '♪ OFF'}
-              </button>
-            </div>
-          </div>
+        <nav className="floating-controls" aria-label="Invitation controls">
+          <button type="button" className="ctrl-chip" onClick={replayIntro}>
+            INTRO
+          </button>
+          <button type="button" className="ctrl-chip" onClick={() => setModalOpen(true)}>
+            RSVP
+          </button>
+          <button type="button" className="ctrl-chip" onClick={toggleMusic}>
+            {musicOn ? '♪ ON' : '♪ OFF'}
+          </button>
         </nav>
       )}
 
-      {/* 7. Video Intro (IMG_8946.MP4 -> /intro.mp4) */}
+      {/* Full-Screen 4K Video Intro */}
       {showIntro && (
         <EnvelopeIntro
           key={introKey}
@@ -263,8 +289,8 @@ export default function Page() {
         />
       )}
 
-      {/* 8. Full Invitation Details, Maps, Calendar & WhatsApp RSVP Modal */}
+      {/* Full Details & WhatsApp RSVP Modal */}
       <RsvpModal open={modalOpen} onClose={() => setModalOpen(false)} data={D} />
-    </main>
+    </div>
   )
 }
