@@ -34,6 +34,7 @@ const SLIDE_DURATIONS = [7500, 9500, 10000, 9500]
 
 export default function Page() {
   const [introKey, setIntroKey] = useState(0)
+  const [showIntro, setShowIntro] = useState(false)
   const [started, setStarted] = useState(false)
   const [step, setStep] = useState(0)
   const [out, setOut] = useState(false)
@@ -43,6 +44,33 @@ export default function Page() {
 
   const timerRef = useRef(null)
   const audioRef = useRef({ ctx: null, interval: null, master: null, droneOscs: [] })
+  const userMutedRef = useRef(false)
+
+  // Play intro automatically once per visitor session
+  useEffect(() => {
+    try {
+      const seen = sessionStorage.getItem('vs_intro_seen') === '1'
+      if (seen) {
+        setShowIntro(false)
+        setStarted(true)
+      } else {
+        setShowIntro(true)
+      }
+    } catch {
+      setShowIntro(true)
+    }
+  }, [])
+
+  // Graceful audio autoplay fallback: start gentle music on first pointer interaction unless muted
+  useEffect(() => {
+    const unlockAudio = () => {
+      if (!userMutedRef.current && !musicOn) {
+        startMusic()
+      }
+    }
+    window.addEventListener('pointerdown', unlockAudio, { once: true })
+    return () => window.removeEventListener('pointerdown', unlockAudio)
+  }, [musicOn])
 
   const goTo = (next) => {
     clearTimeout(timerRef.current)
@@ -138,8 +166,22 @@ export default function Page() {
   }
 
   const toggleMusic = () => {
-    if (musicOn) stopMusic()
-    else startMusic()
+    if (musicOn) {
+      userMutedRef.current = true
+      stopMusic()
+    } else {
+      userMutedRef.current = false
+      startMusic()
+    }
+  }
+
+  const finishIntro = () => {
+    try {
+      sessionStorage.setItem('vs_intro_seen', '1')
+    } catch {}
+    setShowIntro(false)
+    setStep(0)
+    setStarted(true)
   }
 
   const replayIntro = () => {
@@ -147,6 +189,7 @@ export default function Page() {
     setStarted(false)
     setStep(0)
     setPaused(false)
+    setShowIntro(true)
     setIntroKey((k) => k + 1)
   }
 
@@ -380,14 +423,17 @@ export default function Page() {
       )}
 
       {/* 7. Sculpted Ginkgo Envelope + Bronze Wax Seal + Satin Bow + Diamond Lace Split Intro */}
-      <EnvelopeIntro
-        key={introKey}
-        onStartAudio={startMusic}
-        onRevealStart={() => {
-          setStep(0)
-          setStarted(true)
-        }}
-      />
+      {showIntro && (
+        <EnvelopeIntro
+          key={introKey}
+          onRevealStart={() => {
+            setStep(0)
+            setStarted(true)
+          }}
+          onComplete={finishIntro}
+          onSkip={finishIntro}
+        />
+      )}
 
       {/* 8. Full Invitation Details, Maps, Calendar & WhatsApp RSVP Modal */}
       <RsvpModal open={modalOpen} onClose={() => setModalOpen(false)} data={D} />

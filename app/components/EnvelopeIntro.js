@@ -1,32 +1,60 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 
-export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete }) {
+export default function EnvelopeIntro({ onRevealStart, onComplete, onSkip }) {
   // sealed -> opening -> ribbon -> untying -> diamond -> fadeout -> done
   const [phase, setPhase] = useState('sealed')
   const timers = useRef([])
+  const startedRef = useRef(false)
 
+  const clearTimers = () => {
+    timers.current.forEach(clearTimeout)
+    timers.current = []
+  }
+
+  // ~11-second auto-playing physical invitation sequence matching the reference video
   useEffect(() => {
-    return () => timers.current.forEach(clearTimeout)
-  }, [])
-
-  const startSequence = () => {
-    if (phase !== 'sealed') return
-    onStartAudio?.()
-    setPhase('opening')
-
+    startedRef.current = true
     timers.current.push(
-      setTimeout(() => setPhase('ribbon'), 1100),
-      setTimeout(() => setPhase('untying'), 2200),
+      setTimeout(() => setPhase('opening'), 1600),   // 1.6s: flap lifts with wax seal
+      setTimeout(() => setPhase('ribbon'), 3600),    // 3.6s: envelope glides away, floral lace + bow revealed
+      setTimeout(() => setPhase('untying'), 6300),   // 6.3s: satin bow unties smoothly
       setTimeout(() => {
-        setPhase('diamond')
+        setPhase('diamond')                          // 7.9s: ribbon & silk veil open in diamond split
         onRevealStart?.()
-      }, 3050),
-      setTimeout(() => setPhase('fadeout'), 4350),
+      }, 7900),
+      setTimeout(() => setPhase('fadeout'), 9900),   // 9.9s: gentle cross-fade into final invitation
       setTimeout(() => {
         setPhase('done')
         onComplete?.()
-      }, 5050)
+      }, 11000)                                      // 11.0s: complete
+    )
+    return clearTimers
+  }, [])
+
+  const handleSkip = () => {
+    clearTimers()
+    setPhase('done')
+    onSkip?.()
+  }
+
+  // Allow early tap on wax seal during closed state without breaking auto-sequence
+  const handleTapSeal = () => {
+    if (phase !== 'sealed') return
+    clearTimers()
+    setPhase('opening')
+    timers.current.push(
+      setTimeout(() => setPhase('ribbon'), 1900),
+      setTimeout(() => setPhase('untying'), 4400),
+      setTimeout(() => {
+        setPhase('diamond')
+        onRevealStart?.()
+      }, 5900),
+      setTimeout(() => setPhase('fadeout'), 7800),
+      setTimeout(() => {
+        setPhase('done')
+        onComplete?.()
+      }, 8800)
     )
   }
 
@@ -42,17 +70,20 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
     <div
       className={`intro-root${fadingOut ? ' fadeout' : ''}${diamondOpen ? ' revealing' : ''}`}
       role="dialog"
-      aria-label="Wedding Invitation Envelope"
+      aria-label="Wedding Invitation Opening Animation"
     >
+      {/* Elegant Skip Intro Option */}
+      <button type="button" className="skip-intro-btn" onClick={handleSkip}>
+        Skip Intro
+      </button>
+
       {/* LAYER 1: Pearlescent Floral Lace Frame + Diamond Silk Veil + Satin Bow */}
       <div className={`lace-stage${diamondOpen ? ' diamond-open' : ''}`}>
-        {/* Outer Pearlescent Lace Card */}
         <div className={`lace-frame-outer${diamondOpen ? ' opening' : ''}`}>
           <img src="/art/pearl-lace.png" alt="" className="lace-img" />
           <div className="lace-iridescent" />
         </div>
 
-        {/* Center Diamond-Parting Silk Veil Panels (with gathered horizontal ribbon attached to each side!) */}
         <div className="veil-panel left">
           <div className="veil-fabric" />
           <div className="veil-pleat-ribbon" />
@@ -62,7 +93,7 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
           <div className="veil-pleat-ribbon" />
         </div>
 
-        {/* Full-Height Photorealistic Champagne-Ivory Satin Ribbon & Bow */}
+        {/* Champagne-Ivory Satin Ribbon & Bow */}
         <div className={`bow-overlay${bowUntying ? ' untying' : ''}${diamondOpen ? ' parted' : ''}`}>
           <svg
             className="bow-svg-full"
@@ -120,11 +151,10 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
               </filter>
             </defs>
 
-            {/* Horizontal Pleated Silk Bands (left & right, pinched toward center knot) */}
+            {/* Horizontal Pleated Silk Bands */}
             <g className="ribbon-bands" filter="url(#silkShadow)">
               <path d="M-10 318 Q95 326 184 344 L184 374 Q95 388 -10 398 Z" fill="url(#satinH)" />
               <path d="M410 318 Q305 326 216 344 L216 374 Q305 388 410 398 Z" fill="url(#satinH)" />
-              {/* Fine horizontal silk pleat creases */}
               <g stroke="#fffef9" strokeWidth="1.2" opacity="0.72">
                 <path d="M-10 332 Q95 340 184 351" />
                 <path d="M-10 356 Q95 358 184 360" />
@@ -141,7 +171,7 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
               </g>
             </g>
 
-            {/* Long Flowing Diagonal Ribbon Tails reaching bottom corners (matching uploaded image) */}
+            {/* Long Flowing Diagonal Ribbon Tails */}
             <g className="bow-tails" filter="url(#silkShadow)">
               <path
                 d="M188 370 C145 435, 76 530, -8 648 L36 692 C108 570, 158 465, 196 378 Z"
@@ -151,7 +181,6 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
                 d="M212 370 C255 435, 324 530, 408 648 L364 692 C292 570, 242 465, 204 378 Z"
                 fill="url(#tailR)"
               />
-              {/* Specular silk folds on tails */}
               <path d="M185 382 C142 454, 84 548, 12 666" stroke="#fffef9" strokeWidth="1.8" opacity="0.65" />
               <path d="M215 382 C258 454, 316 548, 388 666" stroke="#fffef9" strokeWidth="1.8" opacity="0.65" />
               <path d="M192 382 C154 456, 102 552, 26 678" stroke="#b69b77" strokeWidth="1" opacity="0.45" />
@@ -160,7 +189,6 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
 
             {/* Softly Draped Champagne Satin Bow Loops */}
             <g className="bow-loops" filter="url(#silkShadow)">
-              {/* Left loop */}
               <path
                 d="M186 346 C128 286, 56 298, 52 354 C48 408, 126 394, 186 364 Z"
                 fill="url(#loopL)"
@@ -172,7 +200,6 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
               />
               <path d="M174 342 C130 304, 76 310, 66 346" stroke="#fffef9" strokeWidth="2.2" opacity="0.82" />
 
-              {/* Right loop */}
               <path
                 d="M214 346 C272 286, 344 298, 348 354 C352 408, 274 394, 214 364 Z"
                 fill="url(#loopR)"
@@ -195,7 +222,7 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
         </div>
       </div>
 
-      {/* LAYER 2: Sculpted Ginkgo-Embossed Envelope & Bronze Wax Seal */}
+      {/* LAYER 2: Sculpted Ivory-Champagne Envelope & Antique-Gold Wax Seal */}
       <div className={`envelope-shell${envOpened ? ' opening' : ''}${envGone ? ' gone' : ''}`}>
         <div className="env-inner-shadow" />
 
@@ -223,18 +250,12 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
           <button
             type="button"
             className="wax-seal-trigger"
-            onClick={startSequence}
-            aria-label="Tap wax seal to open wedding invitation"
+            onClick={handleTapSeal}
+            aria-label="Wedding Wax Seal V & S"
           >
             <img src="/art/wax-seal.png" alt="V & S Wax Seal" className="wax-seal-img" />
           </button>
         </div>
-
-        {phase === 'sealed' && (
-          <button type="button" className="tap-seal-label" onClick={startSequence}>
-            Tap seal to open
-          </button>
-        )}
       </div>
     </div>
   )
