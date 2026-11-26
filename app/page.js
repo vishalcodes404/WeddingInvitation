@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import AmbientCanvas from './components/AmbientCanvas'
 import EnvelopeIntro from './components/EnvelopeIntro'
-import { FloatingRings, LeafDivider, MandalaCrest } from './components/Ornaments'
+import { FloatingRings, LeafDivider } from './components/Ornaments'
 import RsvpModal from './components/RsvpModal'
 
 const D = {
@@ -30,7 +30,7 @@ const D = {
   phones: ['9020903355', '9847570940'],
 }
 
-const SLIDE_DURATIONS = [7500, 9500, 10000, 9500]
+const SLIDE_DURATIONS = [9500, 11000]
 
 export default function Page() {
   const [introKey, setIntroKey] = useState(0)
@@ -77,7 +77,7 @@ export default function Page() {
     clearTimeout(timerRef.current)
     setOut(true)
     setTimeout(() => {
-      setStep((next + 4) % 4)
+      setStep((next + 2) % 2)
       setOut(false)
     }, 450)
   }
@@ -85,7 +85,7 @@ export default function Page() {
   useEffect(() => {
     if (!started || paused || modalOpen) return
     timerRef.current = setTimeout(() => {
-      goTo((step + 1) % 4)
+      goTo((step + 1) % 2)
     }, SLIDE_DURATIONS[step])
     return () => clearTimeout(timerRef.current)
   }, [started, paused, modalOpen, step])
@@ -201,78 +201,35 @@ export default function Page() {
       {/* 1. Painted Mughal Floral Arch & Palace Garden Backdrop */}
       <img src="/art/palace.png" alt="" className="palace-bg" />
 
-      {/* 2. Live Birds, Rose Petals, Gold Dust & Fountain Water Particles */}
-      <AmbientCanvas showFountainSparkle={step === 0 || step === 3} />
+      {/* 2. Live Birds, Rose Petals & Gold Dust */}
+      <AmbientCanvas showFountainSparkle={false} />
 
       {/* 3. Lord Ganesha Medallion under Arch Apex */}
       <img src="/art/ganesha.png" alt="Lord Ganesha emblem" className="ganesha-emblem" />
 
-      {/* 4. Dynamic Courtyard Illustrations per Slide */}
+      {/* 4. Dynamic Courtyard Illustrations (Elephants on Slide 0, Couple on Slide 1) */}
       <div className="courtyard-layer" aria-hidden="true">
-        <img
-          src="/art/fountain.png"
-          alt=""
-          className={`prop-fountain${step === 0 || step === 3 ? ' on' : ''}`}
-        />
         <img
           src="/art/elephant-left.png"
           alt=""
-          className={`prop-elephant left${step === 1 ? ' on' : ''}`}
+          className={`prop-elephant left${step === 0 ? ' on' : ''}`}
         />
         <img
           src="/art/elephant-right.png"
           alt=""
-          className={`prop-elephant right${step === 1 ? ' on' : ''}`}
+          className={`prop-elephant right${step === 0 ? ' on' : ''}`}
         />
         <img
           src="/art/couple.png"
           alt=""
-          className={`prop-couple${step === 2 ? ' on' : ''}`}
+          className={`prop-couple${step === 1 ? ' on' : ''}`}
         />
       </div>
 
-      {/* 5. Animated Invitation Scenes (shown once curtains start parting) */}
+      {/* 5. Two Invitation Scenes */}
       {started && (
         <section className={`content-zone${out ? ' out' : ''}`} key={`${introKey}-${step}`}>
           {step === 0 && (
-            <>
-              <svg
-                className="arc-reveal"
-                viewBox="0 0 280 54"
-                style={{ width: '68cqw', overflow: 'visible', marginBottom: '-1cqw' }}
-                aria-hidden="true"
-              >
-                <defs>
-                  <path id="weddingArc" d="M 18 48 Q 140 2 262 48" />
-                </defs>
-                <text
-                  fill="#4a2a1f"
-                  fontSize="14.5"
-                  fontFamily="'Cinzel', serif"
-                  letterSpacing="2.8"
-                  fontWeight="600"
-                >
-                  <textPath href="#weddingArc" startOffset="50%" textAnchor="middle">
-                    WEDDING CEREMONY
-                  </textPath>
-                </text>
-              </svg>
-
-              <div style={{ position: 'relative', width: '100%', display: 'grid', placeItems: 'center' }}>
-                <MandalaCrest />
-                <FloatingRings className="rings-right" />
-              </div>
-
-              <p className="serif-ital" style={{ color: 'var(--rose)', fontSize: '3.2cqw', fontWeight: 600 }}>
-                #{D.groom}And{D.bride}
-              </p>
-              <p className="cin-sm">
-                {D.weekday.toUpperCase()} • {D.day} DECEMBER {D.year}
-              </p>
-            </>
-          )}
-
-          {step === 1 && (
             <>
               <p className="cin" style={{ fontSize: '2.25cqw', fontWeight: 600 }}>
                 WITH THE BLESSINGS OF LORD GANESHA, WE CORDIALLY INVITE YOU TO THE MARRIAGE OF OUR SON
@@ -300,7 +257,7 @@ export default function Page() {
             </>
           )}
 
-          {step === 2 && (
+          {step === 1 && (
             <>
               <div style={{ position: 'relative', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <FloatingRings className="rings-left" />
@@ -334,42 +291,12 @@ export default function Page() {
                 {D.venue.toUpperCase()}, {D.place.toUpperCase()}
               </p>
 
-              <a className="btn-pill" href={D.templeMap} target="_blank" rel="noopener noreferrer">
-                VIEW ON MAP
-              </a>
-            </>
-          )}
-
-          {step === 3 && (
-            <>
-              <h2 className="script-title write-reveal">Reception</h2>
-              <p className="cin" style={{ fontSize: '2.7cqw', fontWeight: 600, color: 'var(--rose-deep)' }}>
-                {D.reception} • SAME DAY
-              </p>
-              <p className="serif-ital" style={{ fontSize: '2.6cqw' }}>
-                You are also invited for the reception at our residence
-              </p>
-              <p className="cin-sm" style={{ fontSize: '2.1cqw' }}>
-                {D.groomHome}
-              </p>
-
-              <LeafDivider label="Sharing the Happiness" />
-
-              <p className="serif-ital" style={{ fontSize: '2.7cqw', lineHeight: 1.4 }}>
-                {D.sharing.slice(0, 2).join('  •  ')}
-                <br />
-                {D.sharing.slice(2).join('  •  ')}
-              </p>
-              <p className="cin-sm" style={{ fontWeight: 600 }}>
-                PARTY LEAVES AT {D.partyLeaves}
-              </p>
-
               <div style={{ display: 'flex', gap: '1.4cqw', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <a className="btn-pill" href={D.residenceMap} target="_blank" rel="noopener noreferrer">
-                  RESIDENCE MAP
+                <a className="btn-pill" href={D.templeMap} target="_blank" rel="noopener noreferrer">
+                  VIEW ON MAP
                 </a>
                 <button type="button" className="btn-pill" onClick={() => setModalOpen(true)}>
-                  RSVP &amp; CALL
+                  RECEPTION &amp; RSVP
                 </button>
               </div>
             </>
