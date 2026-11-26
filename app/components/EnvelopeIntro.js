@@ -17,25 +17,25 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
 
     timers.current.push(
       setTimeout(() => setPhase('ribbon'), 1100),
-      setTimeout(() => setPhase('untying'), 2100),
+      setTimeout(() => setPhase('untying'), 2200),
       setTimeout(() => {
         setPhase('diamond')
         onRevealStart?.()
-      }, 2850),
-      setTimeout(() => setPhase('fadeout'), 4050),
+      }, 3050),
+      setTimeout(() => setPhase('fadeout'), 4350),
       setTimeout(() => {
         setPhase('done')
         onComplete?.()
-      }, 4750)
+      }, 5050)
     )
   }
 
   if (phase === 'done') return null
 
-  const envOpened = phase === 'opening' || phase === 'ribbon' || phase === 'untying' || phase === 'diamond' || phase === 'fadeout'
-  const envGone = phase === 'ribbon' || phase === 'untying' || phase === 'diamond' || phase === 'fadeout'
-  const bowUntying = phase === 'untying' || phase === 'diamond' || phase === 'fadeout'
-  const diamondOpen = phase === 'diamond' || phase === 'fadeout'
+  const envOpened = phase !== 'sealed'
+  const envGone = ['ribbon', 'untying', 'diamond', 'fadeout'].includes(phase)
+  const bowUntying = ['untying', 'diamond', 'fadeout'].includes(phase)
+  const diamondOpen = ['diamond', 'fadeout'].includes(phase)
   const fadingOut = phase === 'fadeout'
 
   return (
@@ -44,15 +44,15 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
       role="dialog"
       aria-label="Wedding Invitation Envelope"
     >
-      {/* LAYER 1: Pearlescent Floral Lace Frame + Silk Veil Diamond Split */}
+      {/* LAYER 1: Pearlescent Floral Lace Frame + Diamond Silk Veil + Satin Bow */}
       <div className={`lace-stage${diamondOpen ? ' diamond-open' : ''}`}>
-        {/* Outer Pearlescent Lace Card (stays still while center veil parts, then fades) */}
+        {/* Outer Pearlescent Lace Card */}
         <div className={`lace-frame-outer${diamondOpen ? ' opening' : ''}`}>
           <img src="/art/pearl-lace.png" alt="" className="lace-img" />
           <div className="lace-iridescent" />
         </div>
 
-        {/* Center Diamond-Parting Silk Veil Panels */}
+        {/* Center Diamond-Parting Silk Veil Panels (with gathered horizontal ribbon attached to each side!) */}
         <div className="veil-panel left">
           <div className="veil-fabric" />
           <div className="veil-pleat-ribbon" />
@@ -62,112 +62,153 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
           <div className="veil-pleat-ribbon" />
         </div>
 
-        {/* Center Shimmering Champagne-Ivory Satin Ribbon & Bow */}
-        <div className={`bow-overlay${bowUntying ? ' untying' : ''}`}>
-          <div className="ribbon-band-full" />
-          <svg className="bow-svg" viewBox="0 0 360 190" fill="none" aria-hidden="true">
+        {/* Full-Height Photorealistic Champagne-Ivory Satin Ribbon & Bow */}
+        <div className={`bow-overlay${bowUntying ? ' untying' : ''}${diamondOpen ? ' parted' : ''}`}>
+          <svg
+            className="bow-svg-full"
+            viewBox="0 0 400 720"
+            preserveAspectRatio="xMidYMid slice"
+            fill="none"
+            aria-hidden="true"
+          >
             <defs>
-              <linearGradient id="silkL" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#fffef9" />
-                <stop offset="35%" stopColor="#f4ead9" />
-                <stop offset="75%" stopColor="#dcc7a7" />
-                <stop offset="100%" stopColor="#bfa47e" />
+              <linearGradient id="satinH" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#d8c3a5" stopOpacity="0.82" />
+                <stop offset="18%" stopColor="#fffdf8" stopOpacity="0.95" />
+                <stop offset="38%" stopColor="#e7d6be" stopOpacity="0.9" />
+                <stop offset="56%" stopColor="#fffef9" stopOpacity="0.95" />
+                <stop offset="78%" stopColor="#d5be9e" stopOpacity="0.88" />
+                <stop offset="100%" stopColor="#b89d79" stopOpacity="0.82" />
               </linearGradient>
-              <linearGradient id="silkR" x1="1" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#fffef9" />
-                <stop offset="35%" stopColor="#f4ead9" />
-                <stop offset="75%" stopColor="#dcc7a7" />
-                <stop offset="100%" stopColor="#bfa47e" />
+
+              <linearGradient id="tailL" x1="0.8" y1="0" x2="0.1" y2="1">
+                <stop offset="0%" stopColor="#fffdf9" stopOpacity="0.92" />
+                <stop offset="35%" stopColor="#eadac3" stopOpacity="0.84" />
+                <stop offset="72%" stopColor="#f9f2e6" stopOpacity="0.78" />
+                <stop offset="100%" stopColor="#cdb695" stopOpacity="0.72" />
               </linearGradient>
-              <radialGradient id="silkK" cx="40%" cy="35%" r="65%">
+
+              <linearGradient id="tailR" x1="0.2" y1="0" x2="0.9" y2="1">
+                <stop offset="0%" stopColor="#fffdf9" stopOpacity="0.92" />
+                <stop offset="35%" stopColor="#eadac3" stopOpacity="0.84" />
+                <stop offset="72%" stopColor="#f9f2e6" stopOpacity="0.78" />
+                <stop offset="100%" stopColor="#cdb695" stopOpacity="0.72" />
+              </linearGradient>
+
+              <linearGradient id="loopL" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#fffef9" stopOpacity="0.96" />
+                <stop offset="45%" stopColor="#efe1cc" stopOpacity="0.94" />
+                <stop offset="85%" stopColor="#d1ba99" stopOpacity="0.92" />
+                <stop offset="100%" stopColor="#b69a74" stopOpacity="0.9" />
+              </linearGradient>
+
+              <linearGradient id="loopR" x1="1" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#fffef9" stopOpacity="0.96" />
+                <stop offset="45%" stopColor="#efe1cc" stopOpacity="0.94" />
+                <stop offset="85%" stopColor="#d1ba99" stopOpacity="0.92" />
+                <stop offset="100%" stopColor="#b69a74" stopOpacity="0.9" />
+              </linearGradient>
+
+              <radialGradient id="knotGrad" cx="42%" cy="32%" r="68%">
                 <stop offset="0%" stopColor="#fffef9" />
-                <stop offset="60%" stopColor="#ebdcc5" />
-                <stop offset="100%" stopColor="#bfa47f" />
+                <stop offset="55%" stopColor="#ebdcc6" />
+                <stop offset="100%" stopColor="#b89d78" />
               </radialGradient>
+
+              <filter id="silkShadow" x="-12%" y="-12%" width="124%" height="124%">
+                <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#5a4326" floodOpacity="0.24" />
+              </filter>
             </defs>
 
-            {/* Hanging Bow Tails */}
-            <g className="bow-tails">
-              <path
-                d="M168 98 C136 130, 104 158, 72 182 L108 185 C134 156, 156 126, 174 102 Z"
-                fill="url(#silkL)"
-                stroke="#cbb38f"
-                strokeWidth="0.8"
-              />
-              <path
-                d="M192 98 C224 130, 256 158, 288 182 L252 185 C226 156, 204 126, 186 102 Z"
-                fill="url(#silkR)"
-                stroke="#cbb38f"
-                strokeWidth="0.8"
-              />
-              <path d="M163 106 C138 134, 114 160, 92 182" stroke="#fffef9" strokeWidth="1.6" opacity="0.75" />
-              <path d="M197 106 C222 134, 246 160, 268 182" stroke="#fffef9" strokeWidth="1.6" opacity="0.75" />
+            {/* Horizontal Pleated Silk Bands (left & right, pinched toward center knot) */}
+            <g className="ribbon-bands" filter="url(#silkShadow)">
+              <path d="M-10 318 Q95 326 184 344 L184 374 Q95 388 -10 398 Z" fill="url(#satinH)" />
+              <path d="M410 318 Q305 326 216 344 L216 374 Q305 388 410 398 Z" fill="url(#satinH)" />
+              {/* Fine horizontal silk pleat creases */}
+              <g stroke="#fffef9" strokeWidth="1.2" opacity="0.72">
+                <path d="M-10 332 Q95 340 184 351" />
+                <path d="M-10 356 Q95 358 184 360" />
+                <path d="M-10 380 Q95 376 184 368" />
+                <path d="M410 332 Q305 340 216 351" />
+                <path d="M410 356 Q305 358 216 360" />
+                <path d="M410 380 Q305 376 216 368" />
+              </g>
+              <g stroke="#a88c67" strokeWidth="0.9" opacity="0.52">
+                <path d="M-10 344 Q95 348 184 356" />
+                <path d="M-10 368 Q95 368 184 364" />
+                <path d="M410 344 Q305 348 216 356" />
+                <path d="M410 368 Q305 368 216 364" />
+              </g>
             </g>
 
-            {/* Symmetric Satin Bow Loops */}
-            <g className="bow-loops">
+            {/* Long Flowing Diagonal Ribbon Tails reaching bottom corners (matching uploaded image) */}
+            <g className="bow-tails" filter="url(#silkShadow)">
               <path
-                d="M168 85 C118 28, 46 42, 54 92 C62 138, 132 122, 168 97 Z"
-                fill="url(#silkL)"
-                stroke="#cbb38f"
-                strokeWidth="0.9"
+                d="M188 370 C145 435, 76 530, -8 648 L36 692 C108 570, 158 465, 196 378 Z"
+                fill="url(#tailL)"
               />
               <path
-                d="M162 89 C124 58, 78 66, 80 92 C82 114, 126 106, 162 94 Z"
-                fill="#b49770"
-                opacity="0.34"
+                d="M212 370 C255 435, 324 530, 408 648 L364 692 C292 570, 242 465, 204 378 Z"
+                fill="url(#tailR)"
               />
-              <path d="M156 82 C118 52, 72 58, 68 84" stroke="#fffef9" strokeWidth="2" opacity="0.85" />
-
-              <path
-                d="M192 85 C242 28, 314 42, 306 92 C298 138, 228 122, 192 97 Z"
-                fill="url(#silkR)"
-                stroke="#cbb38f"
-                strokeWidth="0.9"
-              />
-              <path
-                d="M198 89 C236 58, 282 66, 280 92 C278 114, 234 106, 198 94 Z"
-                fill="#b49770"
-                opacity="0.34"
-              />
-              <path d="M204 82 C242 52, 288 58, 292 84" stroke="#fffef9" strokeWidth="2" opacity="0.85" />
+              {/* Specular silk folds on tails */}
+              <path d="M185 382 C142 454, 84 548, 12 666" stroke="#fffef9" strokeWidth="1.8" opacity="0.65" />
+              <path d="M215 382 C258 454, 316 548, 388 666" stroke="#fffef9" strokeWidth="1.8" opacity="0.65" />
+              <path d="M192 382 C154 456, 102 552, 26 678" stroke="#b69b77" strokeWidth="1" opacity="0.45" />
+              <path d="M208 382 C246 456, 298 552, 374 678" stroke="#b69b77" strokeWidth="1" opacity="0.45" />
             </g>
 
-            {/* Center Knot */}
-            <rect
-              x="164"
-              y="76"
-              width="32"
-              height="34"
-              rx="13"
-              fill="url(#silkK)"
-              stroke="#c8af8a"
-              strokeWidth="1"
-            />
-            <path d="M172 82 Q180 79 188 82" stroke="#fffef9" strokeWidth="1.8" opacity="0.85" />
+            {/* Softly Draped Champagne Satin Bow Loops */}
+            <g className="bow-loops" filter="url(#silkShadow)">
+              {/* Left loop */}
+              <path
+                d="M186 346 C128 286, 56 298, 52 354 C48 408, 126 394, 186 364 Z"
+                fill="url(#loopL)"
+              />
+              <path
+                d="M178 352 C136 322, 84 330, 82 356 C80 380, 132 374, 178 360 Z"
+                fill="#9e825e"
+                opacity="0.34"
+              />
+              <path d="M174 342 C130 304, 76 310, 66 346" stroke="#fffef9" strokeWidth="2.2" opacity="0.82" />
+
+              {/* Right loop */}
+              <path
+                d="M214 346 C272 286, 344 298, 348 354 C352 408, 274 394, 214 364 Z"
+                fill="url(#loopR)"
+              />
+              <path
+                d="M222 352 C264 322, 316 330, 318 356 C320 380, 268 374, 222 360 Z"
+                fill="#9e825e"
+                opacity="0.34"
+              />
+              <path d="M226 342 C270 304, 324 310, 334 346" stroke="#fffef9" strokeWidth="2.2" opacity="0.82" />
+            </g>
+
+            {/* Ribbed Silk Center Knot */}
+            <g className="bow-knot" filter="url(#silkShadow)">
+              <rect x="180" y="336" width="40" height="44" rx="16" fill="url(#knotGrad)" />
+              <path d="M188 340 V376 M196 338 V378 M204 338 V378 M212 340 V376" stroke="#b59a74" strokeWidth="1" opacity="0.45" />
+              <path d="M190 342 Q200 338 210 342" stroke="#fffef9" strokeWidth="2" opacity="0.8" />
+            </g>
           </svg>
         </div>
       </div>
 
       {/* LAYER 2: Sculpted Ginkgo-Embossed Envelope & Bronze Wax Seal */}
       <div className={`envelope-shell${envOpened ? ' opening' : ''}${envGone ? ' gone' : ''}`}>
-        {/* Dark champagne-bronze inner lining visible as top flap lifts */}
         <div className="env-inner-shadow" />
 
-        {/* Left & Right Flaps */}
         <div className="env-flap-side left">
           <img src="/art/ginkgo-paper.png" alt="" className="ginkgo-img" />
         </div>
         <div className="env-flap-side right">
           <img src="/art/ginkgo-paper.png" alt="" className="ginkgo-img" />
         </div>
-
-        {/* Bottom Pocket Flap */}
         <div className="env-flap-bottom">
           <img src="/art/ginkgo-paper.png" alt="" className="ginkgo-img" />
         </div>
 
-        {/* Crisp diagonal envelope crease highlights */}
         <svg className="env-creases" viewBox="0 0 100 180" preserveAspectRatio="none" aria-hidden="true">
           <line x1="0" y1="0" x2="50" y2="90" stroke="rgba(255,252,245,0.75)" strokeWidth="0.35" />
           <line x1="100" y1="0" x2="50" y2="90" stroke="rgba(255,252,245,0.75)" strokeWidth="0.35" />
@@ -175,7 +216,6 @@ export default function EnvelopeIntro({ onStartAudio, onRevealStart, onComplete 
           <line x1="100" y1="180" x2="50" y2="90" stroke="rgba(255,252,245,0.65)" strokeWidth="0.35" />
         </svg>
 
-        {/* Top Flap (lifts upward smoothly while keeping seal readable just like video!) */}
         <div className="env-flap-top-lift">
           <div className="env-flap-top-shape">
             <img src="/art/ginkgo-paper.png" alt="" className="ginkgo-img" />
