@@ -58,7 +58,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% 48%, #3c1816 0%, #2a100e 68%, #1a0706 100%);
+  background: radial-gradient(circle at 50% 48%, #faf3e4 0%, #ede0c6 72%, #dfd0b0 100%);
   cursor: pointer;
   overflow: hidden;
   user-select: none;
@@ -72,87 +72,85 @@ body {
   pointer-events: none;
 }
 
+.intro-video-frame {
+  position: relative;
+  width: min(100vw, calc(100dvh * 9 / 16));
+  height: min(100dvh, calc(100vw * 16 / 9));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .intro-video-exact {
   width: 100%;
   height: 100%;
-  max-width: 100vw;
-  max-height: 100dvh;
   object-fit: contain;
   object-position: center;
   display: block;
   pointer-events: none;
 }
 
-.intro-tap-halo {
+/* "Tap to Open" in words only (no hand) placed below 13/12/2026 */
+.curtain-tap-zone {
   position: absolute;
   left: 50%;
-  top: 50%;
-  width: min(28vw, 126px);
-  height: min(28vw, 126px);
+  top: 75.5%;
   transform: translate(-50%, -50%);
-  border-radius: 50%;
-  border: 1.5px solid rgba(240, 207, 136, 0.72);
-  box-shadow: 0 0 24px rgba(240, 207, 136, 0.45), inset 0 0 18px rgba(240, 207, 136, 0.22);
+  width: 44%;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: none;
-  z-index: 3;
-  animation: introSealPulse 2.1s ease-in-out infinite;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 650ms ease;
 }
 
-@keyframes introSealPulse {
+.curtain-tap-zone.visible {
+  opacity: 1;
+}
+
+.curtain-tap-halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 166, 74, 0.72);
+  box-shadow: 0 0 22px rgba(226, 178, 82, 0.42), inset 0 0 16px rgba(226, 178, 82, 0.16);
+  animation: curtainRingPulse 2.1s ease-in-out infinite;
+}
+
+.curtain-tap-halo.inner {
+  inset: 14%;
+  border-color: rgba(196, 146, 56, 0.55);
+  animation-delay: 0.4s;
+}
+
+@keyframes curtainRingPulse {
   0%, 100% {
-    transform: translate(-50%, -50%) scale(0.95);
+    transform: scale(0.94);
     opacity: 0.48;
   }
   50% {
-    transform: translate(-50%, -50%) scale(1.1);
-    opacity: 0.95;
+    transform: scale(1.06);
+    opacity: 0.96;
   }
 }
 
-.intro-tap-prompt {
-  position: absolute;
-  left: 50%;
-  bottom: max(8.5%, env(safe-area-inset-bottom, 24px));
-  transform: translateX(-50%);
-  padding: 9px 22px;
+.curtain-tap-words {
+  position: relative;
+  padding: 8px 18px;
   border-radius: 999px;
-  border: 1px solid rgba(240, 207, 136, 0.65);
-  background: rgba(34, 12, 10, 0.78);
-  backdrop-filter: blur(6px);
-  color: #f6e2b3;
+  background: rgba(250, 243, 228, 0.92);
+  border: 1px solid rgba(180, 133, 64, 0.65);
+  color: #7c4921;
   font-family: 'Cinzel', serif;
-  font-size: 12px;
+  font-size: clamp(11px, 3vw, 14px);
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   white-space: nowrap;
-  pointer-events: none;
-  z-index: 4;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-  animation: tapPromptFloat 2.1s ease-in-out infinite;
-}
-
-@keyframes tapPromptFloat {
-  0%, 100% { transform: translate(-50%, 0); opacity: 0.88; }
-  50% { transform: translate(-50%, -4px); opacity: 1; }
-}
-
-.intro-skip-pill {
-  position: absolute;
-  top: max(16px, env(safe-area-inset-top));
-  right: max(16px, env(safe-area-inset-right));
-  z-index: 5;
-  padding: 7px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(240, 207, 136, 0.5);
-  background: rgba(30, 11, 9, 0.62);
-  backdrop-filter: blur(6px);
-  color: #f7e6c2;
-  font-family: 'Cinzel', serif;
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(130, 84, 34, 0.16);
 }
 
 /* ================= UNROLLED TEMPLE SCROLL HERO (REFERENCE VIDEO 2s-4.67s) ================= */

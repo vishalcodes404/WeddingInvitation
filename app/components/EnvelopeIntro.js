@@ -1,9 +1,22 @@
 'use client'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function EnvelopeIntro({ onStartMain, onComplete }) {
+  const videoRef = useRef(null)
   const closingRef = useRef(false)
   const [fading, setFading] = useState(false)
+  const [showTapWords, setShowTapWords] = useState(false)
+
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    v.muted = true
+    const p = v.play()
+    if (p && typeof p.catch === 'function') {
+      // Fallback if strict autoplay blocks muted video: surface tap words immediately
+      p.catch(() => setShowTapWords(true))
+    }
+  }, [])
 
   const beginFadeOut = () => {
     if (closingRef.current) return
@@ -15,11 +28,13 @@ export default function EnvelopeIntro({ onStartMain, onComplete }) {
     }, 750)
   }
 
-  // Visitor taps the envelope card → smooth fade straight to hero page (no video, no sound)
-  const handleTap = (e) => {
-    e?.stopPropagation?.()
-    if (closingRef.current) return
-    beginFadeOut()
+  const handleTimeUpdate = () => {
+    const v = videoRef.current
+    if (!v || showTapWords) return
+    // Reveal "TAP TO OPEN" in the lower arch once curtains open & 13/12/2026 settles
+    if (v.currentTime >= 4.4) {
+      setShowTapWords(true)
+    }
   }
 
   return (
@@ -28,31 +43,37 @@ export default function EnvelopeIntro({ onStartMain, onComplete }) {
       role="button"
       tabIndex={0}
       aria-label="Wedding Invitation — Tap to open"
-      onClick={handleTap}
+      onClick={beginFadeOut}
       onKeyDown={(e) => {
         if ((e.key === 'Enter' || e.key === ' ') && !closingRef.current) {
           e.preventDefault()
-          handleTap(e)
+          beginFadeOut()
         }
       }}
     >
-      {/* Static envelope poster image (chocolate lace envelope with golden wax seal) */}
-      <img
-        src="/envelope-poster.jpg"
-        alt="Wedding Invitation Envelope"
-        className="intro-video-exact"
-        draggable="false"
-      />
+      <div className="intro-video-frame">
+        <video
+          ref={videoRef}
+          src="/curtain-intro.mp4"
+          poster="/curtain-poster.jpg"
+          autoPlay
+          muted
+          playsInline
+          preload="auto"
+          className="intro-video-exact"
+          onTimeUpdate={handleTimeUpdate}
+          onEnded={() => setShowTapWords(true)}
+        />
 
-      {/* Subtle golden pulse ring over the central wax seal */}
-      {!fading && (
-        <>
-          <span className="intro-tap-halo" aria-hidden="true" />
-          <div className="intro-tap-prompt" aria-hidden="true">
-            <span>Tap to Open</span>
+        {/* Mention tap in words only (no real hand) below 13/12/2026 */}
+        {!fading && (
+          <div className={`curtain-tap-zone${showTapWords ? ' visible' : ''}`} aria-hidden="true">
+            <span className="curtain-tap-halo" />
+            <span className="curtain-tap-halo inner" />
+            <span className="curtain-tap-words">Tap to Open</span>
           </div>
-        </>
-      )}
+        )}
+      </div>
     </div>
   )
 }
