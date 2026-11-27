@@ -191,9 +191,11 @@ export default function CountdownScratchSection() {
       {/* Interactive Twilight Temple Rooftop + 4 Movable Swinging Illuminated Lamps */}
       <div className="lantern-cd-stage reveal">
         <img
-          src="/art/twilight-bg.jpg"
+          src="/art/twilight-bg.webp"
           alt="Twilight temple balcony with glowing oil lamps"
           className="lantern-cd-bg"
+          loading="lazy"
+          decoding="async"
         />
         <div className="lantern-sky-vignette" aria-hidden="true" />
 
@@ -250,10 +252,12 @@ export default function CountdownScratchSection() {
                 <div className="lantern-cord" style={{ height: `${item.drop}px` }} />
                 <div className="lantern-body-wrap">
                   <img
-                    src="/art/lantern-sprite.png"
+                    src="/art/lantern-sprite.webp"
                     alt=""
                     className="lantern-sprite-img"
                     draggable={false}
+                    loading="lazy"
+                    decoding="async"
                   />
                   {/* Soft breathing inner candle aura behind number */}
                   <span
@@ -281,7 +285,13 @@ export default function CountdownScratchSection() {
       {/* Interactive Scratch Card revealing Couple Photo (IMG_8945.JPG.jpeg) */}
       <div className="scratch-wrap reveal" style={{ marginTop: 26 }}>
         <div className="scratch-frame">
-          <img src="/art/couple-photo.jpg" alt="Vysakh and Sandra" className="couple-photo-img" />
+          <img
+            src="/art/couple-photo.jpg"
+            alt="Vysakh and Sandra"
+            className="couple-photo-img"
+            loading="lazy"
+            decoding="async"
+          />
           <div className="photo-caption-bar">
             <p className="cap-date">13 &bull; DECEMBER &bull; 2026</p>
             <p className="cap-sub">Sunday &bull; 11:51 AM – 12:15 PM</p>

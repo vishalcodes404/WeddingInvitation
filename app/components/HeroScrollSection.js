@@ -10,22 +10,24 @@ export default function HeroScrollSection({ data, started }) {
     >
       {/* Top horizontal scroll roller */}
       <div className="scroll-rod-wrap top" aria-hidden="true">
-        <img src="/art/scroll-rod.png" alt="" className="scroll-rod-img" />
+        <img src="/art/scroll-rod.webp" alt="" className="scroll-rod-img" decoding="async" />
       </div>
 
       {/* Unrolled antique parchment canvas with Thiruvanchoor Subramanya Temple */}
       <div className="parchment-sheet">
         <img
-          src="/art/temple-scroll-hero.jpg"
+          src="/art/temple-scroll-hero.webp"
           alt="Sunlit Thiruvanchoor Subramanya Swamy Temple with Vysakh and Sandra exchanging garlands"
           className="temple-scroll-bg"
+          priority="true"
+          decoding="async"
         />
 
         {/* Sun motes & distant sky birds behind typography */}
         <AmbientCanvas flowerShower={false} showBirdsAndMotes={true} />
 
         {/* Lush movable marigold swags, leaf side garlands & brass temple bells toran */}
-        <SwayingToran src="/art/scroll-toran.png" className="scroll-toran-overlay" />
+        <SwayingToran src="/art/scroll-toran.webp" className="scroll-toran-overlay" />
 
         {/* Upper typography cleanly framed between hanging bells */}
         <div className="scroll-hero-text">
@@ -57,7 +59,7 @@ export default function HeroScrollSection({ data, started }) {
 
       {/* Bottom horizontal scroll roller */}
       <div className="scroll-rod-wrap bottom" aria-hidden="true">
-        <img src="/art/scroll-rod.png" alt="" className="scroll-rod-img" />
+        <img src="/art/scroll-rod.webp" alt="" className="scroll-rod-img" decoding="async" />
       </div>
     </section>
   )

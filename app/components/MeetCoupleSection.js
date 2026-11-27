@@ -45,7 +45,7 @@ function BrideFloralHalo() {
 export default function MeetCoupleSection({ data }) {
   return (
     <section id="meet-couple" className="scroll-sec cream-sec">
-      <SwayingToran src="/art/toran-bells.png" className="toran-img" />
+      <SwayingToran src="/art/toran-bells.webp" className="toran-img" />
 
       <div className="sec-head reveal">
         <p className="eyebrow">BEGINNING OF FOREVER</p>

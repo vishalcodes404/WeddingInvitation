@@ -4,10 +4,12 @@
 export function FrontGroomArt() {
   return (
     <img
-      src="/art/groom-portrait.png"
+      src="/art/groom-portrait.webp"
       alt="Vysakh — The Groom"
       className="solo-fig"
       draggable={false}
+      loading="lazy"
+      decoding="async"
     />
   )
 }
@@ -16,10 +18,12 @@ export function FrontGroomArt() {
 export function FrontBrideArt() {
   return (
     <img
-      src="/art/bride-portrait.png"
+      src="/art/bride-portrait.webp"
       alt="Sandra — The Bride"
       className="solo-fig"
       draggable={false}
+      loading="lazy"
+      decoding="async"
     />
   )
 }

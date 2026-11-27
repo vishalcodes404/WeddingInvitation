@@ -33,7 +33,7 @@ export default function ThankYouSection({ data }) {
     <footer className="scroll-sec thankyou-sec">
       {/* Movable Marigold, Jasmine & Mango Leaf Toran with Brass Bells at top */}
       <SwayingToran
-        src="/art/toran-bells.png"
+        src="/art/toran-bells.webp"
         className="toran-img"
         style={{ marginBottom: 8 }}
       />
@@ -65,9 +65,11 @@ export default function ThankYouSection({ data }) {
 
       {/* Lush Pink Blossoming Garden, Palace Domes & Symmetrical Elephants Holding Lotus */}
       <img
-        src="/art/thankyou-elephants.png"
+        src="/art/thankyou-elephants.webp"
         alt="Royal temple garden with twin adorned elephants holding a lotus"
         className="ty-elephants-img"
+        loading="lazy"
+        decoding="async"
       />
     </footer>
   )

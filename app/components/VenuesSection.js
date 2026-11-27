@@ -15,11 +15,13 @@ function KoburamVenueCard({
     <article className="koburam-card reveal">
       <div className="koburam-stage">
         <img
-          src="/art/koburam-frame.png"
+          src="/art/koburam-frame.webp"
           alt=""
           className="koburam-frame-img"
           aria-hidden="true"
           draggable={false}
+          loading="lazy"
+          decoding="async"
         />
 
         {/* Typography aligned cleanly inside the sculpted gold Koburam maroon interior */}

@@ -22,6 +22,9 @@ export default function RootLayout({ children }) {
           href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400;1,500;1,600&display=swap"
           rel="stylesheet"
         />
+        {/* Preload critical intro assets for instantaneous launch */}
+        <link rel="preload" href="/curtain-intro.mp4" as="video" type="video/mp4" />
+        <link rel="preload" href="/curtain-poster.jpg" as="image" />
       </head>
       <body>{children}</body>
     </html>
