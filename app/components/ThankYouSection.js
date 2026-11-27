@@ -30,9 +30,9 @@ function SunburstDivider() {
 export default function ThankYouSection({ data }) {
   return (
     <footer className="scroll-sec thankyou-sec">
-      {/* Real Pink Rose, Jasmine & Marigold Decoration Toran at top */}
+      {/* Real Marigold, Jasmine & Mango Leaf Toran with Brass Bells at top */}
       <img
-        src="/art/toran-thankyou.png"
+        src="/art/toran-bells.png"
         alt=""
         className="toran-img"
         style={{ marginBottom: 8 }}

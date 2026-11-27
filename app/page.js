@@ -8,6 +8,8 @@ import CountdownScratchSection from './components/CountdownScratchSection'
 import VenuesSection from './components/VenuesSection'
 import ThankYouSection from './components/ThankYouSection'
 
+const FLOWER_BURST_MS = 7500 // flower flow lasts 7.5 seconds per burst
+
 const D = {
   groom: 'Vysakh',
   bride: 'Sandra',
@@ -41,6 +43,7 @@ export default function Page() {
 
   const musicRef = useRef(null)
   const userPausedMusicRef = useRef(false)
+  const flowerTimerRef = useRef(null)
 
   // Scroll-reveal observer for sections below the hero scroll
   useEffect(() => {
@@ -58,29 +61,25 @@ export default function Page() {
     return () => obs.disconnect()
   }, [started])
 
-  // Unlock HTML5 <audio> during visitor's first tap on the intro video
-  const handlePrimeMusic = () => {
-    const a = musicRef.current
-    if (!a) return
-    try {
-      a.muted = true
-      const p = a.play()
-      if (p && typeof p.then === 'function') {
-        p.then(() => {
-          a.pause()
-          a.currentTime = 0
-          a.muted = false
-        }).catch(() => {})
-      }
-    } catch {}
+  // Start a timed flower burst (7.5s)
+  const startFlowerBurst = () => {
+    if (flowerTimerRef.current) clearTimeout(flowerTimerRef.current)
+    setFlowerFlowOn(true)
+    flowerTimerRef.current = setTimeout(() => {
+      setFlowerFlowOn(false)
+      flowerTimerRef.current = null
+    }, FLOWER_BURST_MS)
   }
 
-  // Start playing Kangal-Edho song when intro video finishes and visitor enters hero page
+  // Visitor taps the intro card → open hero page, start flower burst & music
   const handleStartMain = () => {
     setStarted(true)
-    setFlowerFlowOn(true)
     window.scrollTo({ top: 0, behavior: 'instant' })
 
+    // Auto flower burst on hero entrance
+    startFlowerBurst()
+
+    // Unlock & start music
     const a = musicRef.current
     if (a && !userPausedMusicRef.current) {
       a.muted = false
@@ -113,7 +112,15 @@ export default function Page() {
   }
 
   const toggleFlowerFlow = () => {
-    setFlowerFlowOn((v) => !v)
+    if (flowerFlowOn) {
+      // If currently flowing, stop immediately
+      if (flowerTimerRef.current) clearTimeout(flowerTimerRef.current)
+      flowerTimerRef.current = null
+      setFlowerFlowOn(false)
+    } else {
+      // Start a new 7.5s burst
+      startFlowerBurst()
+    }
   }
 
   return (
@@ -223,7 +230,6 @@ export default function Page() {
       {/* Envelope MP4 Intro Overlay: asks to tap first, plays IMG_8961.MP4, fades out smoothly */}
       {showIntro && (
         <EnvelopeIntro
-          onPrimeMusic={handlePrimeMusic}
           onStartMain={handleStartMain}
           onComplete={handleIntroComplete}
         />
