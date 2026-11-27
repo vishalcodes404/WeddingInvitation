@@ -1,12 +1,11 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import AmbientCanvas from './components/AmbientCanvas'
 import EnvelopeIntro from './components/EnvelopeIntro'
+import HeroScrollSection from './components/HeroScrollSection'
 import MeetCoupleSection from './components/MeetCoupleSection'
 import CountdownScratchSection from './components/CountdownScratchSection'
 import VenuesSection from './components/VenuesSection'
 import ThankYouSection from './components/ThankYouSection'
-import { FloatingRings, LeafDivider } from './components/Ornaments'
 import RsvpModal from './components/RsvpModal'
 
 const D = {
@@ -36,7 +35,7 @@ const D = {
 
 export default function Page() {
   const [introKey, setIntroKey] = useState(0)
-  const [showIntro, setShowIntro] = useState(false)
+  const [showIntro, setShowIntro] = useState(true)
   const [started, setStarted] = useState(false)
   const [musicOn, setMusicOn] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
@@ -44,22 +43,7 @@ export default function Page() {
   const audioRef = useRef({ ctx: null, interval: null, master: null, droneOscs: [] })
   const userMutedRef = useRef(false)
 
-  // Play intro automatically once per visitor session
-  useEffect(() => {
-    try {
-      const seen = sessionStorage.getItem('vs_intro_seen') === '1'
-      if (seen) {
-        setShowIntro(false)
-        setStarted(true)
-      } else {
-        setShowIntro(true)
-      }
-    } catch {
-      setShowIntro(true)
-    }
-  }, [])
-
-  // Start gentle ambient music once main invitation is active (after intro video)
+  // Start gentle ambient music once scroll opens
   useEffect(() => {
     if (!started || showIntro) return
     const unlockAudio = () => {
@@ -71,7 +55,7 @@ export default function Page() {
     return () => window.removeEventListener('pointerdown', unlockAudio)
   }, [started, showIntro, musicOn])
 
-  // Scroll-reveal observer for sections below the hero
+  // Scroll-reveal observer for sections below the hero scroll
   useEffect(() => {
     if (!started) return
     const els = document.querySelectorAll('.reveal')
@@ -81,7 +65,7 @@ export default function Page() {
           if (e.isIntersecting) e.target.classList.add('visible')
         })
       },
-      { threshold: 0.12 }
+      { threshold: 0.1 }
     )
     els.forEach((el) => obs.observe(el))
     return () => obs.disconnect()
@@ -174,9 +158,6 @@ export default function Page() {
   }
 
   const finishIntro = () => {
-    try {
-      sessionStorage.setItem('vs_intro_seen', '1')
-    } catch {}
     setShowIntro(false)
     setStarted(true)
     window.scrollTo({ top: 0, behavior: 'instant' })
@@ -193,69 +174,10 @@ export default function Page() {
 
   return (
     <div className="shell">
-      {/* 1. HERO PALACE ARCH INVITATION */}
-      <section className="stage" aria-label="Wedding Invitation">
-        <img src="/art/palace.png" alt="" className="palace-bg" />
-        <AmbientCanvas showFountainSparkle={false} flowerShower={started} />
-        <img src="/art/ganesha.png" alt="Lord Ganesha emblem" className="ganesha-emblem" />
+      {/* 1. UNROLLED TEMPLE SCROLL HERO (matches reference video unroll reveal) */}
+      <HeroScrollSection data={D} started={started} key={`hero-${introKey}`} />
 
-        <div className="courtyard-layer" aria-hidden="true">
-          <img src="/art/couple.png" alt="" className={`prop-couple${started ? ' on' : ''}`} />
-        </div>
-
-        {started && (
-          <div className="content-zone" key={introKey}>
-            <div
-              style={{
-                position: 'relative',
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginBottom: '2.4cqw',
-              }}
-            >
-              <FloatingRings className="rings-left" />
-              <h2 className="script-title write-reveal" style={{ fontSize: '8.2cqw' }}>
-                Wedding
-              </h2>
-              <p className="cin" style={{ fontSize: '2.3cqw', letterSpacing: '0.28em', marginTop: '-0.4cqw' }}>
-                CEREMONY
-              </p>
-            </div>
-
-            <p className="cin" style={{ fontSize: '2cqw', fontWeight: 600, lineHeight: 1.4 }}>
-              WITH THE BLESSINGS OF LORD GANESHA, WE CORDIALLY INVITE YOU TO THE MARRIAGE OF OUR SON
-            </p>
-
-            <h1 className="script-name" style={{ fontSize: '10.2cqw', marginTop: '0.2cqw' }}>
-              {D.groom}
-            </h1>
-
-            <LeafDivider label="&" />
-
-            <h1 className="script-name" style={{ fontSize: '10.2cqw' }}>
-              {D.bride}
-            </h1>
-
-            <div className="date-lockup" style={{ marginTop: '0.2cqw' }}>
-              <span className="side" style={{ fontSize: '2.8cqw' }}>{D.month}</span>
-              <i style={{ height: '6.2cqw' }} />
-              <span className="day" style={{ fontSize: '7.6cqw' }}>{D.day}</span>
-              <i style={{ height: '6.2cqw' }} />
-              <span className="side" style={{ fontSize: '2.8cqw' }}>{D.year}</span>
-            </div>
-
-            {/* Scroll Here prompt cleanly above the couple */}
-            <a href="#meet-couple" className="scroll-cue">
-              <span>SCROLL HERE</span>
-              <span className="scroll-arrow">↓</span>
-            </a>
-          </div>
-        )}
-      </section>
-
-      {/* 2–5. SCROLLABLE SECTIONS (visible once intro completes) */}
+      {/* 2–5. SCROLLABLE SECTIONS (visible once scroll unrolls) */}
       {started && (
         <>
           <MeetCoupleSection data={D} />
@@ -280,10 +202,11 @@ export default function Page() {
         </nav>
       )}
 
-      {/* Full-Screen 4K Video Intro */}
+      {/* Closed Royal Scroll Gate (tap anywhere to unroll) */}
       {showIntro && (
         <EnvelopeIntro
           key={introKey}
+          data={D}
           onComplete={finishIntro}
           onSkip={finishIntro}
         />
