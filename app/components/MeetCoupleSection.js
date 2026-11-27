@@ -1,5 +1,6 @@
 'use client'
 import { FrontBrideArt, FrontGroomArt } from './CouplePortraits'
+import SwayingToran from './SwayingToran'
 
 /* Groom backdrop: Circular Lotus Mandala */
 function GroomLotusHalo() {
@@ -44,7 +45,7 @@ function BrideFloralHalo() {
 export default function MeetCoupleSection({ data }) {
   return (
     <section id="meet-couple" className="scroll-sec cream-sec">
-      <img src="/art/toran-bells.png" alt="" className="toran-img" aria-hidden="true" />
+      <SwayingToran src="/art/toran-bells.png" className="toran-img" />
 
       <div className="sec-head reveal">
         <p className="eyebrow">BEGINNING OF FOREVER</p>

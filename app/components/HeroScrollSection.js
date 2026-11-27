@@ -1,5 +1,6 @@
 'use client'
 import AmbientCanvas from './AmbientCanvas'
+import SwayingToran from './SwayingToran'
 
 export default function HeroScrollSection({ data, started }) {
   return (
@@ -23,13 +24,8 @@ export default function HeroScrollSection({ data, started }) {
         {/* Sun motes & distant sky birds behind typography */}
         <AmbientCanvas flowerShower={false} showBirdsAndMotes={true} />
 
-        {/* Lush marigold swags, leaf side garlands & brass temple bells toran */}
-        <img
-          src="/art/scroll-toran.png"
-          alt=""
-          className="scroll-toran-overlay"
-          aria-hidden="true"
-        />
+        {/* Lush movable marigold swags, leaf side garlands & brass temple bells toran */}
+        <SwayingToran src="/art/scroll-toran.png" className="scroll-toran-overlay" />
 
         {/* Upper typography cleanly framed between hanging bells */}
         <div className="scroll-hero-text">

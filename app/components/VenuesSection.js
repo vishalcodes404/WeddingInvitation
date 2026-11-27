@@ -110,7 +110,7 @@ export default function VenuesSection({ data }) {
             {
               k: 'TIME',
               v: data.muhurtham,
-              sub: `Party leaves at ${data.partyLeaves}`,
+              sub: 'Party starts at 10.00 am',
             },
             {
               k: 'VENUE',
@@ -151,7 +151,7 @@ export default function VenuesSection({ data }) {
           ]}
           blessing="An evening of dinner, blessings & celebration."
           mapHref={data.residenceMap}
-          embedQuery="Narakathara, Kavalam, Alappuzha, Kerala"
+          embedQuery="9.468097,76.489807"
           mapCaption="Kandathusserry House, Narakathara, Kavalam"
         />
       </div>

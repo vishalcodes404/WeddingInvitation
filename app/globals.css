@@ -238,7 +238,7 @@ body {
   width: 100%;
   height: auto;
   z-index: 4;
-  pointer-events: none;
+  pointer-events: auto;
   filter: drop-shadow(0 4px 8px rgba(72, 42, 16, 0.16));
 }
 
@@ -251,6 +251,7 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  pointer-events: none;
 }
 
 .hero-scroll-stage.unrolled .scroll-hero-text > * {
@@ -410,7 +411,20 @@ body {
   margin-left: -18px;
   display: block;
   height: auto;
-  pointer-events: none;
+}
+
+.swaying-toran {
+  transform-origin: 50% 0%;
+  will-change: transform;
+  pointer-events: auto;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.swaying-toran:active {
+  cursor: grabbing;
 }
 
 .sec-head {
@@ -1193,6 +1207,31 @@ body {
   max-width: 340px;
 }
 
+.ty-friends-note {
+  margin-top: 16px;
+  margin-bottom: 10px;
+  max-width: 325px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.42;
+  color: #6a442e;
+}
+
+.ty-friends-note span {
+  font-family: 'Cinzel', serif;
+  font-style: normal;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #964935;
+}
+
 .ty-elephants-img {
   width: calc(100% + 36px);
   margin-left: -18px;
@@ -1280,7 +1319,14 @@ body {
   box-shadow: 0 6px 20px rgba(154, 102, 34, 0.36), 0 0 0 3px rgba(240, 207, 136, 0.28);
 }
 
-.dock-orb-btn.flower.active svg {
+.dock-orb-btn.flower .dock-flower-emoji {
+  font-size: 20px;
+  line-height: 1;
+  display: inline-block;
+  filter: drop-shadow(0 1px 2px rgba(40, 12, 6, 0.25));
+}
+
+.dock-orb-btn.flower.active .dock-flower-emoji {
   animation: gentleBloomSpin 9s linear infinite;
 }
 

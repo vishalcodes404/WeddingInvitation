@@ -8,7 +8,7 @@ import CountdownScratchSection from './components/CountdownScratchSection'
 import VenuesSection from './components/VenuesSection'
 import ThankYouSection from './components/ThankYouSection'
 
-const FLOWER_BURST_MS = 7500 // flower flow lasts 7.5 seconds per burst
+const FLOWER_BURST_MS = 10000 // flower flow lasts 10 seconds per burst
 
 const D = {
   groom: 'Vysakh',
@@ -27,9 +27,9 @@ const D = {
   templeMap:
     'https://www.google.com/maps/search/?api=1&query=Subramanya+Swamy+Temple+Thiruvanchoor+Kottayam',
   residenceMap:
-    'https://www.google.com/maps/search/?api=1&query=Narakathara+Kavalam+Alappuzha+Kerala',
+    'https://www.google.com/maps/search/?api=1&query=9.468097,76.489807',
   reception: '6:00 PM – 10:00 PM',
-  partyLeaves: '10:00 AM',
+  partyLeaves: '10.00 am',
   sharing: ['Reshma & Rajesh', 'Arun & Amrutha', 'Adarsh & Soumya', 'Abhiya & Arabhi'],
   phones: ['9020903355', '9847570940'],
 }
@@ -111,15 +111,8 @@ export default function Page() {
   }
 
   const toggleFlowerFlow = () => {
-    if (flowerFlowOn) {
-      // If currently flowing, stop immediately
-      if (flowerTimerRef.current) clearTimeout(flowerTimerRef.current)
-      flowerTimerRef.current = null
-      setFlowerFlowOn(false)
-    } else {
-      // Start a new 7.5s burst
-      startFlowerBurst()
-    }
+    // Each click starts a 10-second flower flow burst, then automatically stops until clicked again
+    startFlowerBurst()
   }
 
   return (
@@ -156,52 +149,10 @@ export default function Page() {
             type="button"
             className={`dock-orb-btn flower${flowerFlowOn ? ' active' : ''}`}
             onClick={toggleFlowerFlow}
-            aria-label={flowerFlowOn ? 'Turn off flower flow' : 'Turn on flower flow'}
-            title={flowerFlowOn ? 'Flower Flow: ON' : 'Flower Flow: OFF'}
+            aria-label="Shower flowers for 10 seconds"
+            title="Shower flowers (10s)"
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M12 3C13.5 6.2 13.5 8.5 12 10.5C10.5 8.5 10.5 6.2 12 3Z"
-                fill="currentColor"
-                opacity="0.9"
-              />
-              <path
-                d="M12 21C10.5 17.8 10.5 15.5 12 13.5C13.5 15.5 13.5 17.8 12 21Z"
-                fill="currentColor"
-                opacity="0.9"
-              />
-              <path
-                d="M3 12C6.2 10.5 8.5 10.5 10.5 12C8.5 13.5 6.2 13.5 3 12Z"
-                fill="currentColor"
-                opacity="0.9"
-              />
-              <path
-                d="M21 12C17.8 13.5 15.5 13.5 13.5 12C15.5 10.5 17.8 10.5 21 12Z"
-                fill="currentColor"
-                opacity="0.9"
-              />
-              <path
-                d="M5.6 5.6C8.8 6.8 10.4 8.4 10.8 10.8C8.4 10.4 6.8 8.8 5.6 5.6Z"
-                fill="currentColor"
-                opacity="0.7"
-              />
-              <path
-                d="M18.4 18.4C15.2 17.2 13.6 15.6 13.2 13.2C15.6 13.6 17.2 15.2 18.4 18.4Z"
-                fill="currentColor"
-                opacity="0.7"
-              />
-              <path
-                d="M18.4 5.6C17.2 8.8 15.6 10.4 13.2 10.8C13.6 8.4 15.2 6.8 18.4 5.6Z"
-                fill="currentColor"
-                opacity="0.7"
-              />
-              <path
-                d="M5.6 18.4C6.8 15.2 8.4 13.6 10.8 13.2C10.4 15.6 8.8 17.2 5.6 18.4Z"
-                fill="currentColor"
-                opacity="0.7"
-              />
-              <circle cx="12" cy="12" r="2.2" fill="#ebd07e" />
-            </svg>
+            <span className="dock-flower-emoji" aria-hidden="true">🌸</span>
           </button>
 
           <button

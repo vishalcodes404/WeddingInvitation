@@ -1,4 +1,5 @@
 'use client'
+import SwayingToran from './SwayingToran'
 
 function SunburstDivider() {
   const rays = [-75, -56, -38, -20, 0, 20, 38, 56, 75]
@@ -30,13 +31,11 @@ function SunburstDivider() {
 export default function ThankYouSection({ data }) {
   return (
     <footer className="scroll-sec thankyou-sec">
-      {/* Real Marigold, Jasmine & Mango Leaf Toran with Brass Bells at top */}
-      <img
+      {/* Movable Marigold, Jasmine & Mango Leaf Toran with Brass Bells at top */}
+      <SwayingToran
         src="/art/toran-bells.png"
-        alt=""
         className="toran-img"
         style={{ marginBottom: 8 }}
-        aria-hidden="true"
       />
 
       <div className="ty-header-wrap reveal">
@@ -56,6 +55,11 @@ export default function ThankYouSection({ data }) {
 
         <p className="ty-family-whisper">
           13 &bull; 12 &bull; 2026 &nbsp;&bull;&nbsp; MR. BAIJU S. &amp; MRS. RADHA BAIJU &nbsp;&bull;&nbsp; MR. PRAMOD T.M. &amp; MRS. SUDHA PRAMOD
+        </p>
+
+        <p className="ty-friends-note">
+          <span>To Our Friends &amp; Families</span>
+          With heartfelt love to every friend and family member blessing our new beginning.
         </p>
       </div>
 
