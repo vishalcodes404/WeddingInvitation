@@ -6,8 +6,11 @@ function KoburamVenueCard({
   rows,
   blessing,
   mapHref,
-  locationLabel,
+  embedQuery,
+  mapCaption,
 }) {
+  const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(embedQuery)}&t=m&z=15&ie=UTF8&iwloc=&output=embed`
+
   return (
     <article className="koburam-card reveal">
       <div className="koburam-stage">
@@ -50,26 +53,46 @@ function KoburamVenueCard({
             rel="noopener noreferrer"
             className="koburam-location-link"
           >
-            {locationLabel} &rarr;
+            VIEW LOCATION &rarr;
           </a>
         </div>
       </div>
 
-      {/* Explicit Google Location bar right below each venue Koburam */}
-      <a
-        href={mapHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="koburam-google-pill"
-      >
-        <span className="pin-dot" aria-hidden="true">&#128205;</span>
-        Google Maps Location &mdash; {title}
-      </a>
+      {/* Live Google Map Snapshot Card right below each Koburam venue */}
+      <div className="gmap-card">
+        <div className="gmap-frame-wrap">
+          <iframe
+            title={`${title} Google Map Location`}
+            src={embedSrc}
+            className="gmap-iframe"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+          <a
+            href={mapHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="gmap-tap-overlay"
+            aria-label={`Open ${mapCaption} in Google Maps`}
+          />
+        </div>
+        <a
+          href={mapHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="gmap-footer-bar"
+        >
+          <span className="gmap-pin-label">
+            <span aria-hidden="true">&#128205;</span> {mapCaption}
+          </span>
+          <span className="gmap-open-cta">Open Google Maps &rarr;</span>
+        </a>
+      </div>
     </article>
   )
 }
 
-export default function VenuesSection({ data, onOpenRsvp }) {
+export default function VenuesSection({ data }) {
   return (
     <section id="venues" className="scroll-sec cream-sec">
       <div className="sec-head reveal">
@@ -79,7 +102,7 @@ export default function VenuesSection({ data, onOpenRsvp }) {
       </div>
 
       <div className="venues-stack">
-        {/* VENUE 1: WEDDING CEREMONY — Sculpted Gold Koburam */}
+        {/* VENUE 1: WEDDING CEREMONY — Sculpted Gold Koburam + Google Map */}
         <KoburamVenueCard
           dateScript="Sunday, 13 December 2026"
           title="Wedding"
@@ -102,10 +125,11 @@ export default function VenuesSection({ data, onOpenRsvp }) {
           ]}
           blessing="A sacred union blessed with garlands, chants & timeless joy."
           mapHref={data.templeMap}
-          locationLabel="VIEW LOCATION"
+          embedQuery="Subramanya Swamy Temple, Thiruvanchoor, Kottayam, Kerala"
+          mapCaption="Subramanya Swamy Temple, Thiruvanchoor"
         />
 
-        {/* VENUE 2: WEDDING RECEPTION — Sculpted Gold Koburam */}
+        {/* VENUE 2: WEDDING RECEPTION — Sculpted Gold Koburam + Google Map */}
         <KoburamVenueCard
           dateScript="Sunday Evening, 13 Dec 2026"
           title="Reception"
@@ -127,20 +151,9 @@ export default function VenuesSection({ data, onOpenRsvp }) {
           ]}
           blessing="An evening of dinner, blessings & celebration."
           mapHref={data.residenceMap}
-          locationLabel="VIEW LOCATION"
+          embedQuery="Narakathara, Kavalam, Alappuzha, Kerala"
+          mapCaption="Kandathusserry House, Narakathara, Kavalam"
         />
-
-        {/* RSVP & Family Phone Strip */}
-        <div className="contact-strip reveal">
-          <button type="button" className="btn-rsvp-gold" onClick={onOpenRsvp}>
-            Confirm RSVP
-          </button>
-          {data.phones.map((p) => (
-            <a key={p} className="btn-gold-outline" href={`tel:+91${p}`}>
-              Call {p.slice(0, 5)} {p.slice(5)}
-            </a>
-          ))}
-        </div>
       </div>
     </section>
   )

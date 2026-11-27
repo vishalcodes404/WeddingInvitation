@@ -6,7 +6,6 @@ import MeetCoupleSection from './components/MeetCoupleSection'
 import CountdownScratchSection from './components/CountdownScratchSection'
 import VenuesSection from './components/VenuesSection'
 import ThankYouSection from './components/ThankYouSection'
-import RsvpModal from './components/RsvpModal'
 
 const D = {
   groom: 'Vysakh',
@@ -37,23 +36,18 @@ export default function Page() {
   const [introKey, setIntroKey] = useState(0)
   const [showIntro, setShowIntro] = useState(true)
   const [started, setStarted] = useState(false)
-  const [musicOn, setMusicOn] = useState(false)
-  const [modalOpen, setModalOpen] = useState(false)
 
   const audioRef = useRef({ ctx: null, interval: null, master: null, droneOscs: [] })
-  const userMutedRef = useRef(false)
 
   // Start gentle ambient music once scroll opens
   useEffect(() => {
     if (!started || showIntro) return
     const unlockAudio = () => {
-      if (!userMutedRef.current && !musicOn) {
-        startMusic()
-      }
+      startMusic()
     }
     window.addEventListener('pointerdown', unlockAudio, { once: true })
     return () => window.removeEventListener('pointerdown', unlockAudio)
-  }, [started, showIntro, musicOn])
+  }, [started, showIntro])
 
   // Scroll-reveal observer for sections below the hero scroll
   useEffect(() => {
@@ -86,7 +80,6 @@ export default function Page() {
     if (a.master && a.ctx) {
       a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.15)
     }
-    setMusicOn(false)
   }
 
   const startMusic = () => {
@@ -100,7 +93,7 @@ export default function Page() {
       const ctx = a.ctx
       const master = ctx.createGain()
       master.gain.setValueAtTime(0.001, ctx.currentTime)
-      master.gain.exponentialRampToValueAtTime(0.16, ctx.currentTime + 1.2)
+      master.gain.exponentialRampToValueAtTime(0.14, ctx.currentTime + 1.2)
       master.connect(ctx.destination)
       a.master = master
 
@@ -140,66 +133,29 @@ export default function Page() {
         idx = (idx + 1) % pattern.length
         playPluck(scale[pattern[idx]])
       }, 680)
-
-      setMusicOn(true)
-    } catch {
-      setMusicOn(false)
-    }
-  }
-
-  const toggleMusic = () => {
-    if (musicOn) {
-      userMutedRef.current = true
-      stopMusic()
-    } else {
-      userMutedRef.current = false
-      startMusic()
-    }
+    } catch {}
   }
 
   const finishIntro = () => {
     setShowIntro(false)
     setStarted(true)
     window.scrollTo({ top: 0, behavior: 'instant' })
-    if (!userMutedRef.current) startMusic()
-  }
-
-  const replayIntro = () => {
-    stopMusic()
-    window.scrollTo({ top: 0, behavior: 'instant' })
-    setStarted(false)
-    setShowIntro(true)
-    setIntroKey((k) => k + 1)
+    startMusic()
   }
 
   return (
     <div className="shell">
-      {/* 1. UNROLLED TEMPLE SCROLL HERO (matches reference video unroll reveal) */}
+      {/* 1. UNROLLED TEMPLE SCROLL HERO */}
       <HeroScrollSection data={D} started={started} key={`hero-${introKey}`} />
 
-      {/* 2–5. SCROLLABLE SECTIONS (visible once scroll unrolls) */}
+      {/* 2–5. SCROLLABLE SECTIONS */}
       {started && (
         <>
           <MeetCoupleSection data={D} />
           <CountdownScratchSection />
-          <VenuesSection data={D} onOpenRsvp={() => setModalOpen(true)} />
+          <VenuesSection data={D} />
           <ThankYouSection data={D} />
         </>
-      )}
-
-      {/* Fixed Floating Corner Controls */}
-      {started && (
-        <nav className="floating-controls" aria-label="Invitation controls">
-          <button type="button" className="ctrl-chip" onClick={replayIntro}>
-            INTRO
-          </button>
-          <button type="button" className="ctrl-chip" onClick={() => setModalOpen(true)}>
-            RSVP
-          </button>
-          <button type="button" className="ctrl-chip" onClick={toggleMusic}>
-            {musicOn ? '♪ ON' : '♪ OFF'}
-          </button>
-        </nav>
       )}
 
       {/* Closed Royal Scroll Gate (tap anywhere to unroll) */}
@@ -211,9 +167,6 @@ export default function Page() {
           onSkip={finishIntro}
         />
       )}
-
-      {/* Full Details & WhatsApp RSVP Modal */}
-      <RsvpModal open={modalOpen} onClose={() => setModalOpen(false)} data={D} />
     </div>
   )
 }
