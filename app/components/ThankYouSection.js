@@ -30,6 +30,15 @@ function SunburstDivider() {
 export default function ThankYouSection({ data }) {
   return (
     <footer className="scroll-sec thankyou-sec">
+      {/* Real Pink Rose, Jasmine & Marigold Decoration Toran at top */}
+      <img
+        src="/art/toran-thankyou.png"
+        alt=""
+        className="toran-img"
+        style={{ marginBottom: 8 }}
+        aria-hidden="true"
+      />
+
       <div className="ty-header-wrap reveal">
         <SunburstDivider />
 

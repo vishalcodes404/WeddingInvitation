@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import AmbientCanvas from './components/AmbientCanvas'
 import EnvelopeIntro from './components/EnvelopeIntro'
 import HeroScrollSection from './components/HeroScrollSection'
 import MeetCoupleSection from './components/MeetCoupleSection'
@@ -35,18 +36,11 @@ const D = {
 export default function Page() {
   const [showIntro, setShowIntro] = useState(true)
   const [started, setStarted] = useState(false)
+  const [musicOn, setMusicOn] = useState(false)
+  const [flowerFlowOn, setFlowerFlowOn] = useState(true)
 
-  const audioRef = useRef({ ctx: null, interval: null, master: null, droneOscs: [] })
-
-  // Start gentle ambient music once visitor opens invitation
-  useEffect(() => {
-    if (!started || showIntro) return
-    const unlockAudio = () => {
-      startMusic()
-    }
-    window.addEventListener('pointerdown', unlockAudio, { once: true })
-    return () => window.removeEventListener('pointerdown', unlockAudio)
-  }, [started, showIntro])
+  const musicRef = useRef(null)
+  const userPausedMusicRef = useRef(false)
 
   // Scroll-reveal observer for sections below the hero scroll
   useEffect(() => {
@@ -64,90 +58,70 @@ export default function Page() {
     return () => obs.disconnect()
   }, [started])
 
-  useEffect(() => {
-    return () => stopMusic()
-  }, [])
-
-  const stopMusic = () => {
-    const a = audioRef.current
-    if (a.interval) clearInterval(a.interval)
-    a.droneOscs.forEach((o) => {
-      try { o.stop() } catch {}
-    })
-    a.interval = null
-    a.droneOscs = []
-    if (a.master && a.ctx) {
-      a.master.gain.setTargetAtTime(0, a.ctx.currentTime, 0.15)
-    }
-  }
-
-  const startMusic = () => {
+  // Unlock HTML5 <audio> during visitor's first tap on the intro video
+  const handlePrimeMusic = () => {
+    const a = musicRef.current
+    if (!a) return
     try {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext
-      const a = audioRef.current
-      if (!a.ctx) a.ctx = new AudioCtx()
-      if (a.ctx.state === 'suspended') a.ctx.resume()
-      stopMusic()
-
-      const ctx = a.ctx
-      const master = ctx.createGain()
-      master.gain.setValueAtTime(0.001, ctx.currentTime)
-      master.gain.exponentialRampToValueAtTime(0.14, ctx.currentTime + 1.2)
-      master.connect(ctx.destination)
-      a.master = master
-
-      const droneGain = ctx.createGain()
-      droneGain.gain.value = 0.08
-      droneGain.connect(master)
-      a.droneOscs = [130.81, 196.0].map((freq) => {
-        const osc = ctx.createOscillator()
-        osc.type = 'sine'
-        osc.frequency.value = freq
-        osc.connect(droneGain)
-        osc.start()
-        return osc
-      })
-
-      const scale = [261.63, 293.66, 329.63, 369.99, 392.0, 440.0, 493.88, 523.25]
-      const pattern = [0, 2, 4, 7, 5, 4, 2, 3, 4, 6, 7, 4, 2, 1, 0, 4]
-      let idx = 0
-
-      const playPluck = (freq) => {
-        const now = ctx.currentTime
-        const osc = ctx.createOscillator()
-        const g = ctx.createGain()
-        osc.type = 'triangle'
-        osc.frequency.setValueAtTime(freq, now)
-        g.gain.setValueAtTime(0.001, now)
-        g.gain.linearRampToValueAtTime(0.14, now + 0.03)
-        g.gain.exponentialRampToValueAtTime(0.0008, now + 1.65)
-        osc.connect(g)
-        g.connect(master)
-        osc.start(now)
-        osc.stop(now + 1.7)
+      a.muted = true
+      const p = a.play()
+      if (p && typeof p.then === 'function') {
+        p.then(() => {
+          a.pause()
+          a.currentTime = 0
+          a.muted = false
+        }).catch(() => {})
       }
-
-      playPluck(scale[pattern[0]])
-      a.interval = setInterval(() => {
-        idx = (idx + 1) % pattern.length
-        playPluck(scale[pattern[idx]])
-      }, 680)
     } catch {}
   }
 
-  const handleStartOpen = () => {
+  // Start playing Kangal-Edho song when intro video finishes and visitor enters hero page
+  const handleStartMain = () => {
     setStarted(true)
+    setFlowerFlowOn(true)
     window.scrollTo({ top: 0, behavior: 'instant' })
-    startMusic()
+
+    const a = musicRef.current
+    if (a && !userPausedMusicRef.current) {
+      a.muted = false
+      a.volume = 0.72
+      a.play()
+        .then(() => setMusicOn(true))
+        .catch(() => setMusicOn(false))
+    }
   }
 
   const handleIntroComplete = () => {
     setShowIntro(false)
   }
 
+  const toggleMusic = () => {
+    const a = musicRef.current
+    if (!a) return
+    if (musicOn) {
+      userPausedMusicRef.current = true
+      a.pause()
+      setMusicOn(false)
+    } else {
+      userPausedMusicRef.current = false
+      a.muted = false
+      a.volume = 0.72
+      a.play()
+        .then(() => setMusicOn(true))
+        .catch(() => setMusicOn(false))
+    }
+  }
+
+  const toggleFlowerFlow = () => {
+    setFlowerFlowOn((v) => !v)
+  }
+
   return (
     <div className="shell">
-      {/* 1. TEMPLE SCROLL HERO (revealed smoothly behind intro transition) */}
+      {/* Persistent MP3 Wedding Song (Kangal-Edho) */}
+      <audio ref={musicRef} src="/music.mp3" loop preload="auto" />
+
+      {/* 1. TEMPLE SCROLL HERO */}
       <HeroScrollSection data={D} started={started} />
 
       {/* 2–5. SCROLLABLE SECTIONS */}
@@ -160,10 +134,97 @@ export default function Page() {
         </>
       )}
 
-      {/* Exact MP4 Video Intro Overlay (shown only on initial load) */}
+      {/* Full-viewport Real Flower Flow Canvas (active on hero & scrolling when enabled) */}
+      {started && (
+        <AmbientCanvas
+          fullScreen
+          flowerShower={flowerFlowOn}
+          showBirdsAndMotes={false}
+        />
+      )}
+
+      {/* Two Floating Luxury Bottom Buttons: Flower Flow & Music */}
+      {started && (
+        <div className="bottom-media-dock" aria-label="Music and Flower Flow controls">
+          <button
+            type="button"
+            className={`dock-orb-btn flower${flowerFlowOn ? ' active' : ''}`}
+            onClick={toggleFlowerFlow}
+            aria-label={flowerFlowOn ? 'Turn off flower flow' : 'Turn on flower flow'}
+            title={flowerFlowOn ? 'Flower Flow: ON' : 'Flower Flow: OFF'}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M12 3C13.5 6.2 13.5 8.5 12 10.5C10.5 8.5 10.5 6.2 12 3Z"
+                fill="currentColor"
+                opacity="0.9"
+              />
+              <path
+                d="M12 21C10.5 17.8 10.5 15.5 12 13.5C13.5 15.5 13.5 17.8 12 21Z"
+                fill="currentColor"
+                opacity="0.9"
+              />
+              <path
+                d="M3 12C6.2 10.5 8.5 10.5 10.5 12C8.5 13.5 6.2 13.5 3 12Z"
+                fill="currentColor"
+                opacity="0.9"
+              />
+              <path
+                d="M21 12C17.8 13.5 15.5 13.5 13.5 12C15.5 10.5 17.8 10.5 21 12Z"
+                fill="currentColor"
+                opacity="0.9"
+              />
+              <path
+                d="M5.6 5.6C8.8 6.8 10.4 8.4 10.8 10.8C8.4 10.4 6.8 8.8 5.6 5.6Z"
+                fill="currentColor"
+                opacity="0.7"
+              />
+              <path
+                d="M18.4 18.4C15.2 17.2 13.6 15.6 13.2 13.2C15.6 13.6 17.2 15.2 18.4 18.4Z"
+                fill="currentColor"
+                opacity="0.7"
+              />
+              <path
+                d="M18.4 5.6C17.2 8.8 15.6 10.4 13.2 10.8C13.6 8.4 15.2 6.8 18.4 5.6Z"
+                fill="currentColor"
+                opacity="0.7"
+              />
+              <path
+                d="M5.6 18.4C6.8 15.2 8.4 13.6 10.8 13.2C10.4 15.6 8.8 17.2 5.6 18.4Z"
+                fill="currentColor"
+                opacity="0.7"
+              />
+              <circle cx="12" cy="12" r="2.2" fill="#ebd07e" />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            className={`dock-orb-btn music${musicOn ? ' active' : ''}`}
+            onClick={toggleMusic}
+            aria-label={musicOn ? 'Pause music' : 'Play music'}
+            title={musicOn ? 'Music: Playing' : 'Music: Paused'}
+          >
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M9 17.5V6.5L19 4.5V15.5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <circle cx="6.5" cy="17.5" r="2.5" fill="currentColor" />
+              <circle cx="16.5" cy="15.5" r="2.5" fill="currentColor" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {/* Envelope MP4 Intro Overlay: asks to tap first, plays IMG_8961.MP4, fades out smoothly */}
       {showIntro && (
         <EnvelopeIntro
-          onStartOpen={handleStartOpen}
+          onPrimeMusic={handlePrimeMusic}
+          onStartMain={handleStartMain}
           onComplete={handleIntroComplete}
         />
       )}

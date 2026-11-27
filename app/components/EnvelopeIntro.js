@@ -1,65 +1,109 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 
-export default function EnvelopeIntro({ onStartOpen, onComplete }) {
+export default function EnvelopeIntro({ onPrimeMusic, onStartMain, onComplete }) {
   const videoRef = useRef(null)
+  const playingRef = useRef(false)
   const closingRef = useRef(false)
+  const [playing, setPlaying] = useState(false)
   const [fading, setFading] = useState(false)
 
-  // Attempt muted autoplay gracefully on initial load; plays once and holds final frame
-  useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
-    v.muted = true
-    const playPromise = v.play()
-    if (playPromise && typeof playPromise.catch === 'function') {
-      playPromise.catch(() => {
-        // Gracefully ignore browser autoplay block without altering layout or showing buttons
-      })
-    }
-  }, [])
-
-  const handleOpen = (e) => {
-    e?.stopPropagation?.()
+  const beginFadeOut = () => {
     if (closingRef.current) return
     closingRef.current = true
     setFading(true)
-    onStartOpen?.()
+    onStartMain?.()
     setTimeout(() => {
       onComplete?.()
-    }, 700)
+    }, 750)
+  }
+
+  // Ask visitor to tap first -> play IMG_8961.MP4 once cleanly -> smoothly fade to hero page
+  const handleFirstTap = async (e) => {
+    e?.stopPropagation?.()
+    if (playingRef.current || closingRef.current) return
+    playingRef.current = true
+    setPlaying(true)
+
+    // Unlock / prime music element within direct user gesture so MP3 auto-starts on hero transition
+    onPrimeMusic?.()
+
+    const v = videoRef.current
+    if (!v) {
+      beginFadeOut()
+      return
+    }
+    try {
+      v.muted = false
+      await v.play()
+    } catch {
+      try {
+        v.muted = true
+        await v.play()
+      } catch {
+        beginFadeOut()
+      }
+    }
+  }
+
+  const handleTimeUpdate = () => {
+    const v = videoRef.current
+    if (!v || closingRef.current || !v.duration) return
+    // Start smooth 750ms fade right as final frame settles (~0.45s before end)
+    if (v.currentTime >= v.duration - 0.45) {
+      beginFadeOut()
+    }
   }
 
   return (
     <div
       className={`intro-video-stage${fading ? ' fadeout' : ''}`}
-      role="button"
+      role={!playing ? 'button' : 'dialog'}
       tabIndex={0}
-      aria-label="Wedding Invitation — Tap anywhere to open"
-      onClick={handleOpen}
+      aria-label="Wedding Invitation — Tap to open"
+      onClick={!playing ? handleFirstTap : undefined}
       onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
+        if (!playing && (e.key === 'Enter' || e.key === ' ')) {
           e.preventDefault()
-          handleOpen(e)
+          handleFirstTap(e)
         }
       }}
     >
       <video
         ref={videoRef}
-        src="/scroll-intro.mp4"
-        autoPlay
-        muted
+        src="/envelope-intro.mp4"
+        poster="/envelope-poster.jpg"
         playsInline
         preload="auto"
         className="intro-video-exact"
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={beginFadeOut}
       />
 
-      {/* Functional invisible hit zone directly matching 'Tap here to open' area in the video */}
-      <span
-        className="intro-tap-hotspot"
-        aria-label="Tap here to open"
-        onClick={handleOpen}
-      />
+      {/* Ask visitor to tap first over the envelope's central wax seal */}
+      {!playing && !fading && (
+        <>
+          <span className="intro-tap-halo" aria-hidden="true" />
+          <div className="intro-tap-prompt" aria-hidden="true">
+            <span>Tap to Open</span>
+          </div>
+        </>
+      )}
+
+      {playing && !fading && (
+        <button
+          type="button"
+          className="intro-skip-pill"
+          onClick={(e) => {
+            e.stopPropagation()
+            const v = videoRef.current
+            if (v) v.pause()
+            beginFadeOut()
+          }}
+        >
+          Skip &rsaquo;
+        </button>
+      )}
     </div>
   )
 }

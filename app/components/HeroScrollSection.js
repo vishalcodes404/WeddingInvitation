@@ -7,22 +7,21 @@ export default function HeroScrollSection({ data, started }) {
       className={`hero-scroll-stage${started ? ' unrolled' : ''}`}
       aria-label="Wedding Invitation Scroll"
     >
-      {/* Outer dark espresso backdrop & top horizontal scroll roller */}
+      {/* Top horizontal scroll roller */}
       <div className="scroll-rod-wrap top" aria-hidden="true">
         <img src="/art/scroll-rod.png" alt="" className="scroll-rod-img" />
       </div>
 
-      {/* Unrolled torn-edge antique parchment canvas */}
+      {/* Unrolled antique parchment canvas with Thiruvanchoor Subramanya Temple */}
       <div className="parchment-sheet">
-        {/* Background golden temple courtyard + bride & groom varmala scene */}
         <img
           src="/art/temple-scroll-hero.jpg"
-          alt="Sunlit temple courtyard with Vysakh and Sandra exchanging garlands"
+          alt="Sunlit Thiruvanchoor Subramanya Swamy Temple with Vysakh and Sandra exchanging garlands"
           className="temple-scroll-bg"
         />
 
-        {/* Animated gently floating rose petals & birds */}
-        <AmbientCanvas showFountainSparkle={false} flowerShower={started} />
+        {/* Sun motes & distant sky birds behind typography */}
+        <AmbientCanvas flowerShower={false} showBirdsAndMotes={true} />
 
         {/* Lush marigold swags, leaf side garlands & brass temple bells toran */}
         <img
@@ -32,7 +31,7 @@ export default function HeroScrollSection({ data, started }) {
           aria-hidden="true"
         />
 
-        {/* Upper typography cleanly framed between the two hanging floral brass bells */}
+        {/* Upper typography cleanly framed between hanging bells */}
         <div className="scroll-hero-text">
           <h1 className="scroll-couple-name">{data.groom}</h1>
           <p className="scroll-weds-word">weds</p>
@@ -50,7 +49,7 @@ export default function HeroScrollSection({ data, started }) {
           </p>
         </div>
 
-        {/* Gentle Scroll cue anchored cleanly along the ivory path at bottom */}
+        {/* Gentle Scroll cue anchored cleanly along ivory walkway */}
         <a href="#meet-couple" className="scroll-hero-cue">
           <span>SCROLL HERE</span>
           <span className="scroll-arrow">↓</span>
