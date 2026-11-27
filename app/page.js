@@ -33,13 +33,12 @@ const D = {
 }
 
 export default function Page() {
-  const [introKey, setIntroKey] = useState(0)
   const [showIntro, setShowIntro] = useState(true)
   const [started, setStarted] = useState(false)
 
   const audioRef = useRef({ ctx: null, interval: null, master: null, droneOscs: [] })
 
-  // Start gentle ambient music once scroll opens
+  // Start gentle ambient music once visitor opens invitation
   useEffect(() => {
     if (!started || showIntro) return
     const unlockAudio = () => {
@@ -136,17 +135,20 @@ export default function Page() {
     } catch {}
   }
 
-  const finishIntro = () => {
-    setShowIntro(false)
+  const handleStartOpen = () => {
     setStarted(true)
     window.scrollTo({ top: 0, behavior: 'instant' })
     startMusic()
   }
 
+  const handleIntroComplete = () => {
+    setShowIntro(false)
+  }
+
   return (
     <div className="shell">
-      {/* 1. UNROLLED TEMPLE SCROLL HERO */}
-      <HeroScrollSection data={D} started={started} key={`hero-${introKey}`} />
+      {/* 1. TEMPLE SCROLL HERO (revealed smoothly behind intro transition) */}
+      <HeroScrollSection data={D} started={started} />
 
       {/* 2–5. SCROLLABLE SECTIONS */}
       {started && (
@@ -158,13 +160,11 @@ export default function Page() {
         </>
       )}
 
-      {/* Closed Royal Scroll Gate (tap anywhere to unroll) */}
+      {/* Exact MP4 Video Intro Overlay (shown only on initial load) */}
       {showIntro && (
         <EnvelopeIntro
-          key={introKey}
-          data={D}
-          onComplete={finishIntro}
-          onSkip={finishIntro}
+          onStartOpen={handleStartOpen}
+          onComplete={handleIntroComplete}
         />
       )}
     </div>

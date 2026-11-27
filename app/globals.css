@@ -48,198 +48,50 @@ body {
   }
 }
 
-/* ================= CLOSED ROYAL SCROLL GATE (REFERENCE VIDEO 0s-2s) ================= */
-.scroll-gate {
+/* ================= FULL-SCREEN REFERENCE MP4 INTRO OVERLAY ================= */
+.intro-video-stage {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100dvh;
   z-index: 50;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at 50% 48%, #471c10 0%, #2b0f08 62%, #190703 100%);
+  background: radial-gradient(circle at 50% 48%, #2e140a 0%, #221009 68%, #1a0b05 100%);
   cursor: pointer;
   overflow: hidden;
   user-select: none;
-  transition: opacity 0.65s ease;
+  -webkit-tap-highlight-color: transparent;
+  opacity: 1;
+  transition: opacity 700ms ease;
 }
 
-.scroll-gate.unrolling {
+.intro-video-stage.fadeout {
   opacity: 0;
   pointer-events: none;
 }
 
-.gate-ambient-rings {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
+.intro-video-exact {
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100dvh;
+  object-fit: contain;
+  object-position: center;
+  display: block;
   pointer-events: none;
 }
 
-.gate-ring {
-  position: absolute;
-  width: min(82vw, 390px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 1.5px solid rgba(240, 200, 120, 0.45);
-  box-shadow: 0 0 22px rgba(248, 204, 112, 0.28), inset 0 0 18px rgba(248, 204, 112, 0.16);
-  animation: gatePulseRing 3.6s ease-in-out infinite;
-}
-
-.gate-ring.r2 {
-  width: min(105vw, 490px);
-  border-color: rgba(240, 200, 120, 0.22);
-  box-shadow: none;
-  animation-delay: 1.2s;
-}
-
-.gate-ring-seal {
+.intro-tap-hotspot {
   position: absolute;
   left: 50%;
-  top: 22.7%;
-  width: 22%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255, 224, 152, 0.78);
-  box-shadow: 0 0 20px rgba(255, 214, 120, 0.55);
+  top: 56%;
+  width: min(76vw, 310px);
+  height: 76px;
   transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 3;
-  animation: sealGlow 2.4s ease-in-out infinite;
-}
-
-.scroll-gate.unrolling .gate-ring {
-  transform: scale(1.45);
-  opacity: 0;
-  transition: transform 0.85s ease-out, opacity 0.85s ease-out;
-}
-
-@keyframes gatePulseRing {
-  0%, 100% { transform: scale(0.96); opacity: 0.55; }
-  50% { transform: scale(1.03); opacity: 0.95; }
-}
-
-@keyframes sealGlow {
-  0%, 100% { transform: translate(-50%, -50%) scale(0.98); opacity: 0.72; }
-  50% { transform: translate(-50%, -50%) scale(1.07); opacity: 1; }
-}
-
-.gate-inner {
-  position: relative;
+  cursor: pointer;
   z-index: 2;
-  width: 100%;
-  max-width: 440px;
-  padding: 20px 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.gate-eyebrow {
-  font-family: 'Cinzel', serif;
-  font-size: 11px;
-  letter-spacing: 0.34em;
-  color: rgba(244, 226, 196, 0.88);
-  margin-bottom: 10px;
-}
-
-.gate-names {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: clamp(38px, 10vw, 48px);
-  font-weight: 600;
-  line-height: 1.02;
-  color: #f6ead4;
-  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.45);
-  margin-bottom: 16px;
-}
-
-.gate-amp {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 24px;
-  color: #ddb872;
-  margin: 4px 0;
-}
-
-.gate-scroll-wrap {
-  position: relative;
-  width: min(92vw, 390px);
-  margin: 2px auto 12px;
-  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.scroll-gate.unrolling .gate-scroll-wrap {
-  transform: scale(1.06);
-}
-
-.gate-scroll-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.55));
-}
-
-.gate-open-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 26px;
-  border-radius: 999px;
-  border: 1px solid rgba(229, 196, 128, 0.52);
-  background: linear-gradient(90deg, rgba(164, 92, 48, 0.85) 0%, rgba(108, 108, 72, 0.85) 100%);
-  backdrop-filter: blur(6px);
-  color: #fff6e6;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42);
-  animation: fadePulse 2.2s ease-in-out infinite;
-}
-
-.gate-date-line {
-  margin-top: 16px;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: 16px;
-  color: rgba(246, 232, 206, 0.9);
-  letter-spacing: 0.06em;
-}
-
-.gate-hint {
-  margin-top: 14px;
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  letter-spacing: 0.28em;
-  color: rgba(224, 196, 152, 0.72);
-}
-
-.gate-skip-btn {
-  position: absolute;
-  top: max(14px, env(safe-area-inset-top));
-  right: max(14px, env(safe-area-inset-right));
-  z-index: 5;
-  padding: 6px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(224, 192, 134, 0.35);
-  background: rgba(34, 12, 6, 0.55);
-  color: rgba(246, 234, 212, 0.86);
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-@keyframes fadePulse {
-  0%, 100% { transform: scale(1); opacity: 0.92; }
-  50% { transform: scale(1.04); opacity: 1; }
 }
 
 /* ================= UNROLLED TEMPLE SCROLL HERO (REFERENCE VIDEO 2s-4.67s) ================= */
@@ -287,22 +139,6 @@ body {
   box-shadow: 0 0 34px rgba(0, 0, 0, 0.52);
   border-left: 3px solid #d4b887;
   border-right: 3px solid #d4b887;
-  transform-origin: center top;
-}
-
-.hero-scroll-stage.unrolled .parchment-sheet {
-  animation: scrollUnrollReveal 1.25s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-@keyframes scrollUnrollReveal {
-  0% {
-    clip-path: inset(0 0 88% 0);
-    opacity: 0.4;
-  }
-  100% {
-    clip-path: inset(0 0 0% 0);
-    opacity: 1;
-  }
 }
 
 .temple-scroll-bg {
