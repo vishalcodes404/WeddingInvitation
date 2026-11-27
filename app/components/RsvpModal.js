@@ -57,7 +57,7 @@ export default function RsvpModal({ open, onClose, data }) {
 
         <div className="modal-block">
           <p>
-            <strong>Muhurtham:</strong> {data.weekday}, {data.day} December {data.year} ({data.malayalam}) •{' '}
+            <strong>Muhurtham:</strong> {data.weekday}, {data.day} December {data.year} •{' '}
             {data.muhurtham}
           </p>
           <p>

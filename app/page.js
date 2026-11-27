@@ -21,7 +21,6 @@ const D = {
   month: 'DEC',
   day: '13',
   year: '2026',
-  malayalam: '1202 Vrischikam 27',
   muhurtham: '11:51 AM – 12:15 PM',
   venue: 'Subramanya Swamy Temple',
   place: 'Thiruvanchoor',

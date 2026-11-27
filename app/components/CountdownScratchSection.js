@@ -284,7 +284,7 @@ export default function CountdownScratchSection() {
           <img src="/art/couple-photo.jpg" alt="Vysakh and Sandra" className="couple-photo-img" />
           <div className="photo-caption-bar">
             <p className="cap-date">13 &bull; DECEMBER &bull; 2026</p>
-            <p className="cap-sub">Sunday &bull; 1202 Vrischikam 27</p>
+            <p className="cap-sub">Sunday &bull; 11:51 AM – 12:15 PM</p>
           </div>
 
           <canvas

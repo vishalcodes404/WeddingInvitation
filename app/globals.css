@@ -265,6 +265,7 @@ body {
 .hero-scroll-stage.unrolled .scroll-hero-text > *:nth-child(3) { animation-delay: 0.65s; }
 .hero-scroll-stage.unrolled .scroll-hero-text > *:nth-child(4) { animation-delay: 0.80s; }
 .hero-scroll-stage.unrolled .scroll-hero-text > *:nth-child(5) { animation-delay: 0.92s; }
+.hero-scroll-stage.unrolled .scroll-hero-text > *:nth-child(6) { animation-delay: 1.04s; }
 
 .scroll-couple-name {
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -313,6 +314,16 @@ body {
   font-style: italic;
   font-size: 3.4cqw;
   color: #74492d;
+}
+
+.scroll-venue-location {
+  margin-top: 1.5cqw;
+  font-family: 'Cinzel', serif;
+  font-size: 2.55cqw;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+  color: #7d3c22;
+  line-height: 1.35;
 }
 
 .scroll-hero-cue {

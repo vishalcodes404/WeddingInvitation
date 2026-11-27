@@ -110,7 +110,7 @@ export default function VenuesSection({ data }) {
             {
               k: 'TIME',
               v: data.muhurtham,
-              sub: `${data.malayalam} • Leaves ${data.partyLeaves}`,
+              sub: `Party leaves at ${data.partyLeaves}`,
             },
             {
               k: 'VENUE',

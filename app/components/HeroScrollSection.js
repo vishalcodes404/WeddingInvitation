@@ -47,6 +47,9 @@ export default function HeroScrollSection({ data, started }) {
           <p className="scroll-sub-blessings">
             {data.weekday} &bull; {data.muhurtham}
           </p>
+          <p className="scroll-venue-location">
+            {data.venue}, {data.place}
+          </p>
         </div>
 
         {/* Gentle Scroll cue anchored cleanly along ivory walkway */}
