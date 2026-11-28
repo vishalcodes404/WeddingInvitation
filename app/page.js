@@ -8,7 +8,7 @@ import CountdownScratchSection from './components/CountdownScratchSection'
 import VenuesSection from './components/VenuesSection'
 import ThankYouSection from './components/ThankYouSection'
 
-const FLOWER_BURST_MS = 10000 // flower flow lasts 10 seconds per burst
+const FLOWER_BURST_MS = 15000 // flower flow lasts 15 seconds per burst
 
 const D = {
   groom: 'Vysakh',
@@ -38,14 +38,14 @@ export default function Page() {
   const [showIntro, setShowIntro] = useState(true)
   const [started, setStarted] = useState(false)
   const [musicOn, setMusicOn] = useState(false)
-  // Flower flow starts false; triggers for 10 sec on intro tap, and on button click
+  // Flower flow starts false; triggers for 15 sec on intro tap, and on button click
   const [flowerFlowOn, setFlowerFlowOn] = useState(false)
 
   const musicRef = useRef(null)
   const userPausedMusicRef = useRef(false)
   const flowerTimerRef = useRef(null)
 
-  // Start 10-second flower flow burst, automatically stops after 10 sec
+  // Start 15-second flower flow burst, automatically stops after 15 sec
   const triggerFlowerBurst = () => {
     if (flowerTimerRef.current) clearTimeout(flowerTimerRef.current)
     setFlowerFlowOn(true)
@@ -78,12 +78,12 @@ export default function Page() {
     return () => obs.disconnect()
   }, [started])
 
-  // Visitor taps the intro card → open hero page, flow for 10 seconds only, then stop
+  // Visitor taps the intro card → open hero page, flow for 15 seconds only, then stop
   const handleStartMain = () => {
     setStarted(true)
     window.scrollTo({ top: 0, behavior: 'instant' })
 
-    // Flower flow for 10 seconds only
+    // Flower flow for 15 seconds only
     triggerFlowerBurst()
 
     // Unlock & start music
@@ -119,7 +119,7 @@ export default function Page() {
   }
 
   const toggleFlowerFlow = () => {
-    // Visitor clicks the bottom flower button → flows again for 10 seconds only, then stops
+    // Visitor clicks the bottom flower button → flows again for 15 seconds only, then stops
     triggerFlowerBurst()
   }
 
@@ -157,8 +157,8 @@ export default function Page() {
             type="button"
             className={`dock-orb-btn flower${flowerFlowOn ? ' active' : ''}`}
             onClick={toggleFlowerFlow}
-            aria-label="Shower flowers for 10 seconds"
-            title="Shower flowers (10s)"
+            aria-label="Shower flowers for 15 seconds"
+            title="Shower flowers (15s)"
           >
             <span className="dock-flower-emoji" aria-hidden="true">🌸</span>
           </button>
