@@ -54,7 +54,9 @@ export default function ThankYouSection({ data }) {
         </div>
 
         <p className="ty-family-whisper">
-          13 &bull; 12 &bull; 2026 &nbsp;&bull;&nbsp; MR. BAIJU S. &amp; MRS. RADHA BAIJU &nbsp;&bull;&nbsp; MR. PRAMOD T.M. &amp; MRS. SUDHA PRAMOD
+          13 &bull; 12 &bull; 2026 &nbsp;&bull;&nbsp; MR. BAIJU S. &amp; MRS. RADHA BAIJU
+          <br />
+          MR. PRAMOD T.M. &amp; MRS. SUDHA PRAMOD
         </p>
 
         <p className="ty-friends-note">

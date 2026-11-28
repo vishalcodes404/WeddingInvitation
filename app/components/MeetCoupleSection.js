@@ -104,6 +104,80 @@ function TempleNicheWatermark() {
   )
 }
 
+/* Delicate South Indian Jasmine Flower at the bottom-left of the niche arch */
+function SmallNicheFlower() {
+  return (
+    <svg
+      className="niche-corner-flower"
+      viewBox="0 0 60 60"
+      fill="none"
+      aria-hidden="true"
+    >
+      <defs>
+        <filter id="nicheFlowerGlow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="2" stdDeviation="2.2" floodColor="rgba(50, 36, 18, 0.22)" />
+        </filter>
+      </defs>
+      <g filter="url(#nicheFlowerGlow)">
+        {/* Soft Sacred Mango Leaves / Foliage */}
+        <path
+          d="M14 44 C8 32 16 26 18 28 C22 34 18 42 14 44 Z"
+          fill="#4b733f"
+          opacity="0.9"
+        />
+        <path
+          d="M16 46 C24 48 30 40 26 36 C20 38 18 44 16 46 Z"
+          fill="#5c874d"
+          opacity="0.85"
+        />
+        <path
+          d="M10 40 C6 37 8 32 12 33 C14 36 12 40 10 40 Z"
+          fill="#70985a"
+          opacity="0.8"
+        />
+
+        {/* Slender Jasmine Bud */}
+        <ellipse
+          cx="28"
+          cy="32"
+          rx="3.5"
+          ry="6"
+          transform="rotate(32 28 32)"
+          fill="#fffef8"
+          stroke="#dec8a0"
+          strokeWidth="0.6"
+        />
+        <path d="M26 36 Q28 34 30 37" stroke="#4b733f" strokeWidth="1" strokeLinecap="round" />
+
+        {/* Primary Blooming Jasmine Blossom */}
+        <g transform="translate(20, 38)">
+          {/* 5 Petals */}
+          <path d="M0 0 C-4 -10 4 -10 0 0" fill="#ffffff" stroke="#e0cb9e" strokeWidth="0.55" />
+          <path d="M0 0 C6 -9 12 -3 0 0" fill="#fffdf9" stroke="#e0cb9e" strokeWidth="0.55" />
+          <path d="M0 0 C10 3 8 11 0 0" fill="#fffdf6" stroke="#e0cb9e" strokeWidth="0.55" />
+          <path d="M0 0 C-1 11 -9 8 0 0" fill="#fffef7" stroke="#e0cb9e" strokeWidth="0.55" />
+          <path d="M0 0 C-11 2 -10 -6 0 0" fill="#ffffff" stroke="#e0cb9e" strokeWidth="0.55" />
+          {/* Golden Center Pistil */}
+          <circle cx="0" cy="0" r="3" fill="#e8b13d" />
+          <circle cx="0" cy="0" r="1.5" fill="#ca721c" />
+          <circle cx="0" cy="0" r="0.6" fill="#fff" />
+        </g>
+
+        {/* Secondary Mini Jasmine Blossom */}
+        <g transform="translate(11, 46) scale(0.68)">
+          <path d="M0 0 C-4 -10 4 -10 0 0" fill="#ffffff" stroke="#e0cb9e" strokeWidth="0.6" />
+          <path d="M0 0 C6 -9 12 -3 0 0" fill="#fffdf9" stroke="#e0cb9e" strokeWidth="0.6" />
+          <path d="M0 0 C10 3 8 11 0 0" fill="#fffdf6" stroke="#e0cb9e" strokeWidth="0.6" />
+          <path d="M0 0 C-1 11 -9 8 0 0" fill="#fffef7" stroke="#e0cb9e" strokeWidth="0.6" />
+          <path d="M0 0 C-11 2 -10 -6 0 0" fill="#ffffff" stroke="#e0cb9e" strokeWidth="0.6" />
+          <circle cx="0" cy="0" r="2.8" fill="#e8b13d" />
+          <circle cx="0" cy="0" r="1.4" fill="#ca721c" />
+        </g>
+      </g>
+    </svg>
+  )
+}
+
 /* Scalloped Royal Jharokha Arch Framing Header */
 function RoyalArchSvg() {
   return (
@@ -201,7 +275,7 @@ export default function MeetCoupleSection({ data }) {
 
       {/* GROOM CARD (Vysakh) */}
       <article className="couple-card-v2 groom reveal">
-        {/* Left Arched Niche with Temple Watermark & Portrait */}
+        {/* Left Arched Niche with Temple Watermark, Portrait & Corner Jasmine Blossom */}
         <div className="niche-frame">
           <div className="niche-backdrop">
             <TempleNicheWatermark />
@@ -209,6 +283,7 @@ export default function MeetCoupleSection({ data }) {
           <div className="niche-portrait-wrap">
             <FrontGroomArt />
           </div>
+          <SmallNicheFlower />
         </div>
 
         {/* Right Info Column */}
@@ -240,7 +315,7 @@ export default function MeetCoupleSection({ data }) {
 
       {/* BRIDE CARD (Sandra) */}
       <article className="couple-card-v2 bride reveal">
-        {/* Left Arched Niche with Temple Watermark & Portrait */}
+        {/* Left Arched Niche with Temple Watermark, Portrait & Corner Jasmine Blossom */}
         <div className="niche-frame">
           <div className="niche-backdrop">
             <TempleNicheWatermark />
@@ -248,6 +323,7 @@ export default function MeetCoupleSection({ data }) {
           <div className="niche-portrait-wrap">
             <FrontBrideArt />
           </div>
+          <SmallNicheFlower />
         </div>
 
         {/* Right Info Column */}
