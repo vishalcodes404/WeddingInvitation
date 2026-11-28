@@ -38,11 +38,11 @@ export default function Page() {
   const [showIntro, setShowIntro] = useState(true)
   const [started, setStarted] = useState(false)
   const [musicOn, setMusicOn] = useState(false)
+  // Flower flow is active continuously once the invitation opens, and can be toggled by the user
   const [flowerFlowOn, setFlowerFlowOn] = useState(true)
 
   const musicRef = useRef(null)
   const userPausedMusicRef = useRef(false)
-  const flowerTimerRef = useRef(null)
 
   // Scroll-reveal observer for sections below the hero scroll
   useEffect(() => {
@@ -60,23 +60,13 @@ export default function Page() {
     return () => obs.disconnect()
   }, [started])
 
-  // Start a timed flower burst (7.5s)
-  const startFlowerBurst = () => {
-    if (flowerTimerRef.current) clearTimeout(flowerTimerRef.current)
-    setFlowerFlowOn(true)
-    flowerTimerRef.current = setTimeout(() => {
-      setFlowerFlowOn(false)
-      flowerTimerRef.current = null
-    }, FLOWER_BURST_MS)
-  }
-
-  // Visitor taps the intro card → open hero page, start flower burst & music
+  // Visitor taps the intro card → open hero page, start flower shower & music
   const handleStartMain = () => {
     setStarted(true)
     window.scrollTo({ top: 0, behavior: 'instant' })
 
-    // Auto flower burst on hero entrance
-    startFlowerBurst()
+    // Keep flower flow active
+    setFlowerFlowOn(true)
 
     // Unlock & start music
     const a = musicRef.current
@@ -111,8 +101,8 @@ export default function Page() {
   }
 
   const toggleFlowerFlow = () => {
-    // Each click starts a 10-second flower flow burst, then automatically stops until clicked again
-    startFlowerBurst()
+    // Toggle continuous flower flow on/off
+    setFlowerFlowOn((prev) => !prev)
   }
 
   return (

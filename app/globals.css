@@ -457,166 +457,441 @@ body {
   margin: 10px auto 0;
 }
 
-/* ================= MEET THE COUPLE (4TH PHOTO REFERENCE) ================= */
-.couple-card {
-  display: grid;
-  grid-template-columns: 1.12fr 0.88fr;
-  align-items: center;
-  gap: 8px;
-  background: #ffffff;
-  border: 1px solid rgba(180, 133, 64, 0.22);
-  border-radius: 18px;
-  padding: 18px 12px 16px 18px;
-  box-shadow: 0 10px 30px rgba(72, 52, 26, 0.08);
-  text-align: left;
+/* ================= MEET THE COUPLE (REFERENCE DESIGN MATCH) ================= */
+.meet-couple-stage {
+  position: relative;
+  background: #fcf7ee;
+  padding: 28px 14px 28px;
   overflow: hidden;
-  position: relative;
+  user-select: none;
 }
 
-.bride-card {
-  grid-template-columns: 0.88fr 1.12fr;
-  padding: 18px 18px 16px 12px;
-  background: linear-gradient(135deg, #fff9fa 0%, #ffffff 100%);
-  border-color: rgba(168, 72, 92, 0.22);
-}
-
-.bride-card .parent-box.left-accent {
-  background: #fdf2f4;
-  border-color: rgba(168, 72, 92, 0.24);
-  border-left: 3px solid var(--rose);
-}
-
-.role-label {
-  font-family: 'Cinzel', serif;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  color: var(--gold-text);
-  text-transform: uppercase;
-}
-
-.couple-card-name {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 34px;
-  font-weight: 600;
-  font-style: italic;
-  color: #2f231c;
-  margin: 4px 0 6px;
-  line-height: 1.08;
-}
-
-.card-tagline {
-  font-size: 14px;
-  font-style: italic;
-  color: #7c6756;
-  margin-bottom: 12px;
-}
-
-.parent-box {
-  background: #f9f3e6;
-  border: 1px solid rgba(180, 133, 64, 0.26);
-  border-radius: 12px;
-  padding: 11px 12px;
-  position: relative;
-}
-
-.parent-box.right-accent {
-  border-right: 3px solid var(--gold);
-}
-
-.parent-box.left-accent {
-  border-left: 3px solid var(--gold);
-}
-
-.parent-line {
-  font-size: 13.5px;
-  font-weight: 600;
-  color: #3f2f25;
-  line-height: 1.35;
-}
-
-.home-line {
-  font-size: 12px;
-  color: #6f5b4d;
-  margin-top: 4px;
-  line-height: 1.35;
-}
-
-.card-art {
-  position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 230px;
-}
-
-.lotus-watermark {
+/* Interactive Hanging Brass Oil Lamps */
+.swaying-lamp-anchor {
   position: absolute;
-  width: 162px;
-  height: 162px;
-  opacity: 0.56;
+  top: 0;
+  z-index: 12;
+  width: 52px;
+  height: 145px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.swaying-lamp-anchor:active {
+  cursor: grabbing;
+}
+
+.swaying-lamp-anchor.left {
+  left: 8px;
+}
+
+.swaying-lamp-anchor.right {
+  right: 8px;
+}
+
+.swaying-lamp-pendulum {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  will-change: transform;
+}
+
+.swaying-lamp-img {
+  width: 100%;
+  height: auto;
+  max-height: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(80, 50, 16, 0.28));
   pointer-events: none;
 }
 
-.solo-fig {
+.lamp-flame-glow {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  background: radial-gradient(circle, rgba(255, 225, 120, 0.95) 0%, rgba(255, 140, 0, 0.45) 52%, transparent 75%);
+  border-radius: 50%;
+  animation: flameFlicker 2.4s infinite ease-in-out alternate;
+  pointer-events: none;
+}
+
+@keyframes flameFlicker {
+  0% {
+    transform: translateX(-50%) scale(0.92);
+    opacity: 0.82;
+  }
+  50% {
+    transform: translateX(-50%) scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) scale(0.95);
+    opacity: 0.88;
+  }
+}
+
+/* Royal Arch Header Framing */
+.meet-header-wrapper {
+  position: relative;
+  margin: 0 auto 22px;
+  padding: 10px 10px 14px;
+  text-align: center;
+  max-width: 380px;
+}
+
+.royal-arch-frame-svg {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100px;
+  pointer-events: none;
+}
+
+.meet-header-content {
   position: relative;
   z-index: 2;
-  height: 226px;
+  padding-top: 14px;
+}
+
+.meet-om-sign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Cinzel', serif;
+  color: #7a1f33;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  margin-bottom: 2px;
+}
+
+.om-symbol {
+  font-size: 16px;
+  font-weight: 700;
+  color: #8c2338;
+}
+
+.om-danda {
+  font-size: 12px;
+  color: #b89347;
+}
+
+.meet-main-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 38px;
+  font-weight: 600;
+  font-style: italic;
+  color: #5d1727;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.meet-title-ornament {
+  margin-top: 4px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Couple Cards V2 (Arched Niche + Pill Badge + Parent Box) */
+.couple-card-v2 {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(212, 178, 111, 0.45);
+  border-radius: 20px;
+  padding: 14px 12px 14px 10px;
+  gap: 12px;
+  box-shadow: 0 8px 24px rgba(80, 52, 24, 0.07);
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+
+.niche-frame {
+  position: relative;
+  background: #fcf8f0;
+  border: 1.2px solid rgba(212, 178, 111, 0.5);
+  border-radius: 56px 56px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 208px;
+  overflow: hidden;
+}
+
+.niche-backdrop {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.niche-temple-watermark {
+  width: 85%;
+  height: auto;
+  opacity: 0.42;
+}
+
+.niche-portrait-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+}
+
+.niche-portrait-wrap .solo-fig {
+  height: 198px;
   width: auto;
   max-width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 6px 10px rgba(70, 50, 28, 0.14));
+  filter: drop-shadow(0 4px 10px rgba(60, 40, 20, 0.16));
 }
 
-.heart-sep {
-  font-size: 16px;
-  color: var(--gold);
-  margin: 14px 0;
+.card-jasmine-sprig {
+  position: absolute;
+  bottom: -4px;
+  left: -4px;
+  width: 42px;
+  height: auto;
+  z-index: 4;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 6px rgba(50, 40, 20, 0.18));
 }
 
-.quote-card {
-  margin-top: 22px;
-  background: #ffffff;
-  border: 1px solid rgba(180, 133, 64, 0.22);
-  border-radius: 16px;
-  padding: 22px 18px;
-  box-shadow: 0 8px 26px rgba(72, 52, 26, 0.06);
+.card-details-v2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.quote-text {
-  font-size: 19px;
-  font-weight: 600;
-  font-style: italic;
-  color: #3b2a20;
-  line-height: 1.42;
-}
-
-.quote-credit {
-  font-family: 'Cinzel', serif;
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  color: var(--gold-text);
-  margin-top: 12px;
-}
-
-.sharing-strip {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(180, 133, 64, 0.2);
-}
-
-.sharing-head {
-  font-family: 'Cinzel', serif;
-  font-size: 9.5px;
-  letter-spacing: 0.18em;
-  color: var(--rose-deep);
+.role-pill-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   margin-bottom: 4px;
 }
 
-.sharing-names {
-  font-size: 14.5px;
+.role-accent-line {
+  flex: 1;
+  height: 1px;
+  background: rgba(122, 31, 51, 0.3);
+}
+
+.role-pill-badge {
+  background: #7a1f33;
+  color: #ffffff;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 3px 9px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(122, 31, 51, 0.22);
+  white-space: nowrap;
+}
+
+.couple-name-v2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 32px;
+  font-weight: 700;
   font-style: italic;
-  color: #5b483b;
-  line-height: 1.5;
+  color: #5a1928;
+  line-height: 1.05;
+  margin: 2px 0 3px;
+}
+
+.couple-blessing-v2 {
+  font-size: 13px;
+  font-style: italic;
+  color: #7b6351;
+  margin: 0;
+}
+
+.card-mini-diamond {
+  color: #c99f52;
+  font-size: 9px;
+  margin: 5px 0 6px;
+}
+
+.parent-box-v2 {
+  background: #faf4e6;
+  border: 1px solid rgba(212, 178, 111, 0.38);
+  border-radius: 12px;
+  padding: 8px 9px;
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+}
+
+.parent-icon-wrap {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(201, 159, 82, 0.15);
+  color: #8c5b20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.parent-info-wrap {
+  flex: 1;
+  min-width: 0;
+}
+
+.parent-title-v2 {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #3b281c;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.parent-address-v2 {
+  font-size: 10px;
+  color: #6b5749;
+  line-height: 1.35;
+  margin-top: 2px;
+}
+
+/* Double-Border Quote Card */
+.meet-quote-card-v2 {
+  margin-top: 12px;
+  background: #fdfaf3;
+  border: 1.5px solid rgba(212, 178, 111, 0.55);
+  border-radius: 20px;
+  padding: 4px;
+  box-shadow: 0 8px 24px rgba(72, 52, 26, 0.05);
+}
+
+.quote-inner-frame {
+  border: 1px dashed rgba(212, 178, 111, 0.5);
+  border-radius: 16px;
+  padding: 16px 14px;
+  text-align: center;
+}
+
+.quote-text-v2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 600;
+  color: #3f281e;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.quote-lotus-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0 4px;
+}
+
+.quote-divider-line {
+  width: 38px;
+  height: 1px;
+  background: rgba(184, 147, 71, 0.45);
+}
+
+.lotus-emblem {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.quote-compliments-v2 {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  color: #8c5b20;
+  margin: 2px 0 8px;
+}
+
+.sharing-box-v2 {
+  padding-top: 8px;
+  border-top: 1px solid rgba(212, 178, 111, 0.25);
+}
+
+.sharing-title-v2 {
+  font-family: 'Cinzel', serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #7a1f33;
+  margin-bottom: 3px;
+}
+
+.sharing-names-v2 {
+  font-size: 13px;
+  font-style: italic;
+  color: #5a483a;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* Bottom Decorative Flourish Strip */
+.meet-bottom-flourish {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding: 0 4px;
+  position: relative;
+}
+
+.meet-bottom-lotus {
+  width: 68px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(80, 40, 20, 0.15));
+}
+
+.meet-bottom-temple {
+  width: 68px;
+  height: auto;
+  object-fit: contain;
+  opacity: 0.85;
+  filter: drop-shadow(0 4px 8px rgba(80, 40, 20, 0.15));
+}
+
+.meet-indicator-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(180, 140, 90, 0.32);
+}
+
+.indicator-dot.active {
+  background: #7a1f33;
+  transform: scale(1.15);
 }
 
 /* ================= MOVABLE HANGING LANTERNS COUNTDOWN (1ST PHOTO REFERENCE) ================= */
