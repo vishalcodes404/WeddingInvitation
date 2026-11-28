@@ -1,5 +1,6 @@
 'use client'
 import SwayingBell from './SwayingBell'
+import SwayingToran from './SwayingToran'
 
 function KoburamVenueCard({
   dateScript,
@@ -102,6 +103,13 @@ function KoburamVenueCard({
 export default function VenuesSection({ data }) {
   return (
     <section id="venues" className="scroll-sec cream-sec">
+      {/* Movable Marigold, Jasmine & Mango Leaf Toran with Brass Bells at top (Same as Thank You section) */}
+      <SwayingToran
+        src="/art/toran-bells.webp"
+        className="toran-img"
+        style={{ marginBottom: 14 }}
+      />
+
       <div className="sec-head reveal">
         <p className="eyebrow">SACRED CELEBRATIONS</p>
         <h2 className="sec-title-italic">Venues &amp; Events</h2>
