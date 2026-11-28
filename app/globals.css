@@ -1191,21 +1191,17 @@ body {
   pointer-events: none;
 }
 
-/* Interactive Hanging Brass Bells for Koburam Venues (Movable on both venues) */
+/* Hanging Brass Bells with Chain for Koburam Venues (Visitor Cannot Touch) */
 .swaying-bell-anchor {
   position: absolute;
   top: 32.9%;
   z-index: 10;
   width: 9.74%;
   aspect-ratio: 74 / 111;
-  cursor: grab;
-  touch-action: none;
+  pointer-events: none !important;
+  cursor: default !important;
   user-select: none;
   transform-origin: 50% 0;
-}
-
-.swaying-bell-anchor:active {
-  cursor: grabbing;
 }
 
 .swaying-bell-anchor.left {

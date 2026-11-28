@@ -38,11 +38,29 @@ export default function Page() {
   const [showIntro, setShowIntro] = useState(true)
   const [started, setStarted] = useState(false)
   const [musicOn, setMusicOn] = useState(false)
-  // Flower flow is active continuously once the invitation opens, and can be toggled by the user
-  const [flowerFlowOn, setFlowerFlowOn] = useState(true)
+  // Flower flow starts false; triggers for 10 sec on intro tap, and on button click
+  const [flowerFlowOn, setFlowerFlowOn] = useState(false)
 
   const musicRef = useRef(null)
   const userPausedMusicRef = useRef(false)
+  const flowerTimerRef = useRef(null)
+
+  // Start 10-second flower flow burst, automatically stops after 10 sec
+  const triggerFlowerBurst = () => {
+    if (flowerTimerRef.current) clearTimeout(flowerTimerRef.current)
+    setFlowerFlowOn(true)
+    flowerTimerRef.current = setTimeout(() => {
+      setFlowerFlowOn(false)
+      flowerTimerRef.current = null
+    }, FLOWER_BURST_MS)
+  }
+
+  // Cleanup flower timer on unmount
+  useEffect(() => {
+    return () => {
+      if (flowerTimerRef.current) clearTimeout(flowerTimerRef.current)
+    }
+  }, [])
 
   // Scroll-reveal observer for sections below the hero scroll
   useEffect(() => {
@@ -60,13 +78,13 @@ export default function Page() {
     return () => obs.disconnect()
   }, [started])
 
-  // Visitor taps the intro card → open hero page, start flower shower & music
+  // Visitor taps the intro card → open hero page, flow for 10 seconds only, then stop
   const handleStartMain = () => {
     setStarted(true)
     window.scrollTo({ top: 0, behavior: 'instant' })
 
-    // Keep flower flow active
-    setFlowerFlowOn(true)
+    // Flower flow for 10 seconds only
+    triggerFlowerBurst()
 
     // Unlock & start music
     const a = musicRef.current
@@ -101,8 +119,8 @@ export default function Page() {
   }
 
   const toggleFlowerFlow = () => {
-    // Toggle continuous flower flow on/off
-    setFlowerFlowOn((prev) => !prev)
+    // Visitor clicks the bottom flower button → flows again for 10 seconds only, then stops
+    triggerFlowerBurst()
   }
 
   return (

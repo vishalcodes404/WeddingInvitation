@@ -14,8 +14,16 @@ export default function AmbientCanvas({
   const canvasRef = useRef(null)
   const showerRef = useRef(flowerShower)
   const skyRef = useRef(showBirdsAndMotes)
+  const resetPetalsRef = useRef(null)
   showerRef.current = flowerShower
   skyRef.current = showBirdsAndMotes
+
+  useEffect(() => {
+    showerRef.current = flowerShower
+    if (flowerShower && resetPetalsRef.current) {
+      resetPetalsRef.current()
+    }
+  }, [flowerShower])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -80,6 +88,16 @@ export default function AmbientCanvas({
         opacity: 0.85 + Math.random() * 0.14,
       }
     })
+
+    resetPetalsRef.current = () => {
+      for (let i = 0; i < petals.length; i++) {
+        const p = petals[i]
+        p.x = 0.03 + Math.random() * 0.94
+        p.y = (i / petals.length) * 1.05 - 0.08 + (Math.random() - 0.5) * 0.1
+        p.rot = Math.random() * Math.PI * 2
+        p.flip = Math.random() * Math.PI * 2
+      }
+    }
 
     // Draw digital procedural rose petal
     const drawDigitalRosePetal = (size, tilt) => {
