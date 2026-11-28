@@ -184,7 +184,7 @@ export default function MeetCoupleSection({ data }) {
 
       {/* GROOM CARD (Vysakh) */}
       <article className="couple-card-v2 groom reveal">
-        {/* Left Arched Niche with Temple Watermark, Portrait & Jasmine Sprig */}
+        {/* Left Arched Niche with Temple Watermark & Portrait */}
         <div className="niche-frame">
           <div className="niche-backdrop">
             <TempleNicheWatermark />
@@ -192,13 +192,6 @@ export default function MeetCoupleSection({ data }) {
           <div className="niche-portrait-wrap">
             <FrontGroomArt />
           </div>
-          <img
-            src="/art/card-jasmine-sprig.webp"
-            alt="Fragrant Jasmine"
-            className="card-jasmine-sprig"
-            loading="lazy"
-            decoding="async"
-          />
         </div>
 
         {/* Right Info Column */}
@@ -230,7 +223,7 @@ export default function MeetCoupleSection({ data }) {
 
       {/* BRIDE CARD (Sandra) */}
       <article className="couple-card-v2 bride reveal">
-        {/* Left Arched Niche with Temple Watermark, Portrait & Jasmine Sprig */}
+        {/* Left Arched Niche with Temple Watermark & Portrait */}
         <div className="niche-frame">
           <div className="niche-backdrop">
             <TempleNicheWatermark />
@@ -238,13 +231,6 @@ export default function MeetCoupleSection({ data }) {
           <div className="niche-portrait-wrap">
             <FrontBrideArt />
           </div>
-          <img
-            src="/art/card-jasmine-sprig.webp"
-            alt="Fragrant Jasmine"
-            className="card-jasmine-sprig"
-            loading="lazy"
-            decoding="async"
-          />
         </div>
 
         {/* Right Info Column */}
@@ -291,29 +277,6 @@ export default function MeetCoupleSection({ data }) {
             <p className="sharing-names-v2">{data.sharing.join('  •  ')}</p>
           </div>
         </div>
-      </div>
-
-      {/* BOTTOM DECORATIVE FLOURISH STRIP (Lotus left, 3 dots center, Temple right) */}
-      <div className="meet-bottom-flourish" aria-hidden="true">
-        <img
-          src="/art/bottom-lotus-decor.webp"
-          alt=""
-          className="meet-bottom-lotus"
-          loading="lazy"
-          decoding="async"
-        />
-        <div className="meet-indicator-dots">
-          <span className="indicator-dot active" />
-          <span className="indicator-dot" />
-          <span className="indicator-dot" />
-        </div>
-        <img
-          src="/art/bottom-temple-decor.webp"
-          alt=""
-          className="meet-bottom-temple"
-          loading="lazy"
-          decoding="async"
-        />
       </div>
     </section>
   )

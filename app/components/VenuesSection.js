@@ -1,4 +1,5 @@
 'use client'
+import SwayingBell from './SwayingBell'
 
 function KoburamVenueCard({
   dateScript,
@@ -23,6 +24,10 @@ function KoburamVenueCard({
           loading="lazy"
           decoding="async"
         />
+
+        {/* Interactive Hanging Brass Bells (Movable on tap/drag/hover for both venues) */}
+        <SwayingBell side="left" className="koburam-hanging-bell left" />
+        <SwayingBell side="right" className="koburam-hanging-bell right" />
 
         {/* Typography aligned cleanly inside the sculpted gold Koburam maroon interior */}
         <div className="koburam-inner">
