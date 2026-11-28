@@ -1194,10 +1194,10 @@ body {
 /* Interactive Hanging Brass Bells for Koburam Venues (Movable on both venues) */
 .swaying-bell-anchor {
   position: absolute;
-  top: 35.1%;
+  top: 32.9%;
   z-index: 10;
-  width: 9.1%;
-  aspect-ratio: 69 / 77;
+  width: 9.74%;
+  aspect-ratio: 74 / 111;
   cursor: grab;
   touch-action: none;
   user-select: none;
@@ -1209,11 +1209,11 @@ body {
 }
 
 .swaying-bell-anchor.left {
-  left: 17.7%;
+  left: 18.2%;
 }
 
 .swaying-bell-anchor.right {
-  right: 17.4%;
+  right: 18.2%;
 }
 
 .swaying-bell-pendulum {
