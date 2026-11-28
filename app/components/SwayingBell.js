@@ -90,6 +90,9 @@ export default function SwayingBell({ side = 'left', className = '', style }) {
     ring(16)
   }
 
+  const bellSrc =
+    side === 'left' ? '/art/venue-bell-left.webp' : '/art/venue-bell-right.webp'
+
   return (
     <div
       className={`swaying-bell-anchor ${side} ${className}`}
@@ -106,7 +109,7 @@ export default function SwayingBell({ side = 'left', className = '', style }) {
     >
       <div ref={bellRef} className="swaying-bell-pendulum">
         <img
-          src="/art/venue-bell.webp"
+          src={bellSrc}
           alt="Traditional brass temple bell"
           className="swaying-bell-img"
           draggable={false}

@@ -1,6 +1,5 @@
 'use client'
 import { FrontBrideArt, FrontGroomArt } from './CouplePortraits'
-import SwayingLamp from './SwayingLamp'
 
 /* Delicate golden temple gopuram watermark inside the niche backdrop */
 function TempleNicheWatermark() {
@@ -153,9 +152,27 @@ function RoyalArchSvg() {
 export default function MeetCoupleSection({ data }) {
   return (
     <section id="meet-couple" className="meet-couple-stage cream-sec">
-      {/* Interactive Hanging Brass Oil Lamps on chains (sway smoothly with touch/drag) */}
-      <SwayingLamp side="left" className="meet-hanging-lamp left" />
-      <SwayingLamp side="right" className="meet-hanging-lamp right" />
+      {/* Sacred Lord Krishna Peacock Feathers (Left-1 photo, Right-2 photo) */}
+      <div className="meet-peacock-feather left" aria-hidden="true">
+        <img
+          src="/art/peacock-feather-left.webp"
+          alt=""
+          className="peacock-feather-img"
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      </div>
+      <div className="meet-peacock-feather right" aria-hidden="true">
+        <img
+          src="/art/peacock-feather-right.webp"
+          alt=""
+          className="peacock-feather-img"
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      </div>
 
       {/* Royal Arch Header Framing */}
       <div className="meet-header-wrapper reveal">
